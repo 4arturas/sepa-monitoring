@@ -41,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "openapi-typescript": "^5.4.1",
+    "openapi-typescript-codegen": "^0.23.0"
   }
 }
