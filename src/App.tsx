@@ -2,9 +2,17 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import NavBar from "./components/NavBar/NavBar";
+import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
+      <div>
+        <NavBar/>
+        <AppRouter/>
+        <hr/>
+
+
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -52,6 +60,7 @@ function App() {
         </span>
       </header>
     </div>
+      </div>
   );
 }
 
