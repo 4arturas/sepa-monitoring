@@ -128,7 +128,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                                     host: '172.23.1.250',
                                     database: 'PBX.Sepa.SCT.Kreda',
                                     username: 'monitoring',
-                                    password: '7202529E-9D21-4CC8-ACA4-FB2EB9806DE4'
+                                    password: ''
                                 }
                             ];
 
