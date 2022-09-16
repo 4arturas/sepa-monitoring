@@ -1,19 +1,50 @@
 import {Table} from "antd";
-import {useEffect, useState} from "react";
-import {CompaniesService, Company_Contracts_CompaniesResponse} from "../../services/openapi";
+import React, {useEffect, useState} from "react";
+import {
+    CompaniesService,
+    Company_Contracts_CompaniesResponse, Company_Contracts_CompanyResponse,
+    User_Contracts_UserResponse
+} from "../../services/openapi";
 import {CompanyNewEdit} from "./CompanyNewEdit";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 
 const columns = [
     {
-        title: 'Id',
-        dataIndex: 'transactionId',
-        key: 'transactionId'
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+    },
+    {
+        title: 'isActive',
+        dataIndex: 'isActive',
+        key: 'isActive',
+        render: (first:any, record:Company_Contracts_CompanyResponse) =>
+            record.isActive ? 'active' : 'not active'
+    },
+    {
+        title: 'isDeleted',
+        dataIndex: 'isDeleted',
+        key: 'isDeleted',
+        render: (first:any, record:Company_Contracts_CompanyResponse) =>
+            record.isDeleted ? 'deleted' : 'not deleted'
+    },
+    {
+        title: 'Business Area',
+        dataIndex: 'connections',
+        key: 'connections',
+        render: (first:any, record:Company_Contracts_CompanyResponse) =>
+            record?.connections?.map( c => <div key={`${record.id}${c.businessArea}`}>{c.businessArea}</div>)
+    },
+    {
+        title: 'Action',
+        render: (first:any, record:Company_Contracts_CompanyResponse) =>
+            <span><CompanyNewEdit company={record}/>&nbsp;&nbsp;&nbsp;<DeleteOutlined style={{fontSize:'18px'}} /></span>
     },
 ];
 
 export const Companies = () => {
 
-    const [companies, setCompanies] = useState([]);
+    const [companies, setCompanies] = useState<Array<Company_Contracts_CompanyResponse>>();
     const [loading, setLoading] = useState(false);
     const defaultPageSize: number = 5;
     const [pageSize, setPageSize] = useState<number>(defaultPageSize);
@@ -22,7 +53,7 @@ export const Companies = () => {
     const loadData = async ( values:any, current:number|undefined, pageSize:number|undefined ) => {
         setLoading( true );
         const companiesResponse:Company_Contracts_CompaniesResponse = await CompaniesService.getV1Companies();
-        console.log( companiesResponse );
+        setCompanies( companiesResponse.companies || [] );
         setLoading(false);
     }
 
