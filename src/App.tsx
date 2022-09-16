@@ -10,7 +10,7 @@ function App() {
       <div>
         <NavBar/>
         <AppRouter/>
-        <hr/>
+        <hr style={{marginTop:'200px'}}/>
 
 
     <div className="App">
