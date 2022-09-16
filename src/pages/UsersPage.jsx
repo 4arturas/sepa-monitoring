@@ -1,6 +1,7 @@
 import {useEffect, useState, useSyncExternalStore} from "react";
 // import axios from "axios";
 import {Link} from "react-router-dom";
+import {UsersCell} from "../components/Users/UsersCell";
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ const UsersPage = () => {
 
     return (
         <div data-testid='users-page'>
-            USERS
+            <UsersCell/>
             {/*{ users.map( user => <div key={user.id} data-testid='user-item'>{user.name}</div> ) }*/}
             { users.map( user =>
                 <Link
