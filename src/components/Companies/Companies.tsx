@@ -1,6 +1,7 @@
 import {Table} from "antd";
 import {useEffect, useState} from "react";
 import {CompaniesService, Company_Contracts_CompaniesResponse} from "../../services/openapi";
+import {CompanyNewEdit} from "./CompanyNewEdit";
 
 const columns = [
     {
@@ -31,6 +32,7 @@ export const Companies = () => {
 
     return (
         <div>
+            <span style={{float:'right'}}><CompanyNewEdit/></span>
             <Table
                 dataSource={companies}
                 columns={columns}
