@@ -1,11 +1,15 @@
 import React, {useState} from "react";
-import {Button, Form, Input, message} from "antd";
+import {Alert, Button, Form, Input, message} from "antd";
 import {
     Authentication_Contracts_LogInRequest,
     Authentication_Contracts_LogInResponse,
     AuthenticationsService
 } from "../../services/openapi";
 import { useNavigate } from "react-router-dom";
+import {selectToken, setToken} from "./loginSlice";
+import {useDispatch} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {selectCount} from "../../features/counter/counterSlice";
 
 
 interface LoginProps {
@@ -34,7 +38,13 @@ export const Login: React.FC<LoginProps> = () => {
     const [qrCodeImageUrl,setQrCodeImageUrl] = useState<string>();
     let navigate = useNavigate();
 
+    const token = useAppSelector(selectToken);
+    const dispatch = useAppDispatch();
+
     return (
+        <React.Fragment>
+            { token && <><Alert message={'You are already logged in, but feel free to login one more time'}/><br/></> }
+
         <Form
             data-testid='login-component'
             name="basic"
@@ -43,6 +53,11 @@ export const Login: React.FC<LoginProps> = () => {
             initialValues={{email: 'adminas@bbservice.lt', code: '123456'}}
             onFinish={async (values: any) => {
                 const hide = message.loading('Checking your email and code', 1000);
+
+                console.log( 'login module', token );
+
+                dispatch( setToken( 'baba' ) );
+
                 try {
                     const requestBody:Authentication_Contracts_LogInRequest = values;
                     const response:Authentication_Contracts_LogInResponse = await AuthenticationsService.postV1AuthenticationsAuthenticatorLogin( requestBody );
@@ -54,7 +69,9 @@ export const Login: React.FC<LoginProps> = () => {
                         return;
                     }
 
-                    window.localStorage.setItem('token', String(response.token) );
+                    const localToken:string = String(response.token);
+                    dispatch( setToken( localToken ) );
+                    window.localStorage.setItem('token', localToken );
 
                     navigate('/');
                     hide();
@@ -101,5 +118,6 @@ export const Login: React.FC<LoginProps> = () => {
                 </Button>
             </Form.Item>
         </Form>
+        </React.Fragment>
     );
 }
