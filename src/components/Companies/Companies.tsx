@@ -1,12 +1,11 @@
 import {Table} from "antd";
 import React, {useEffect, useState} from "react";
-import {
-    CompaniesService,
-    Company_Contracts_CompaniesResponse, Company_Contracts_CompanyResponse,
-    User_Contracts_UserResponse
-} from "../../services/openapi";
+import { Company_Contracts_CompanyResponse} from "../../services/openapi";
 import {CompanyNewEdit} from "./CompanyNewEdit";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {DeleteOutlined} from "@ant-design/icons";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../app/hooks";
+import {CompanyQuery, companySliceActions} from "./Companies.Slice";
 
 const columns = [
     {
@@ -42,23 +41,22 @@ const columns = [
     },
 ];
 
-export const Companies = () => {
+interface CompaniesProps {
+    companies:Array<Company_Contracts_CompanyResponse>,
+    loading: boolean
+}
 
-    const [companies, setCompanies] = useState<Array<Company_Contracts_CompanyResponse>>();
-    const [loading, setLoading] = useState(false);
+export const Companies: React.FC<CompaniesProps> = ({companies, loading}) => {
+
+
+
     const defaultPageSize: number = 5;
     const [pageSize, setPageSize] = useState<number>(defaultPageSize);
     const [total, setTotal] = useState<number>(0)
 
-    const loadData = async ( values:any, current:number|undefined, pageSize:number|undefined ) => {
-        setLoading( true );
-        const companiesResponse:Company_Contracts_CompaniesResponse = await CompaniesService.getV1Companies();
-        setCompanies( companiesResponse.companies || [] );
-        setLoading(false);
-    }
 
     useEffect( () => {
-        loadData( null, 1, pageSize );
+        setTotal( companies.length );
     }, [] );
 
     return (
@@ -73,9 +71,6 @@ export const Companies = () => {
                     position: ["bottomLeft"]
                 }}
                 onChange={ async (e) => {
-
-                    // setOrganizations( companies.companies );
-                    await loadData(null, e.current, e.pageSize );
                     setPageSize( e.pageSize || defaultPageSize );
                 }}
                 bordered
