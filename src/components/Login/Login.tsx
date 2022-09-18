@@ -10,6 +10,7 @@ import {selectToken, setToken} from "./loginSlice";
 import {useDispatch} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectCount} from "../../features/counter/counterSlice";
+import {userSliceActions} from "./User.Slice";
 
 
 interface LoginProps {
@@ -33,13 +34,15 @@ async function test2()
 
 export const Login: React.FC<LoginProps> = () => {
 
+    const loginState = useAppSelector( state => state.user.login );
+    const dispatch = useAppDispatch();
+
     enum States { INIT, CODE_IS_NOT_SET, CODE_IS_SET}
     const [state,setState] = useState<States>(States.INIT);
     const [qrCodeImageUrl,setQrCodeImageUrl] = useState<string>();
     let navigate = useNavigate();
 
     const token = useAppSelector(selectToken);
-    const dispatch = useAppDispatch();
 
     return (
         <React.Fragment>
@@ -55,6 +58,8 @@ export const Login: React.FC<LoginProps> = () => {
                 const hide = message.loading('Checking your email and code', 1000);
 
                 console.log( 'login module', token );
+
+                dispatch( userSliceActions.login( { email: values.email, code: values.code } ) );
 
                 dispatch( setToken( 'baba' ) );
 
@@ -113,7 +118,7 @@ export const Login: React.FC<LoginProps> = () => {
                 <Input/>
             </Form.Item>
             <Form.Item style={{textAlign:'center'}}>
-                <Button htmlType="submit">
+                <Button htmlType="submit" disabled={loginState.loading}>
                     Login
                 </Button>
             </Form.Item>
