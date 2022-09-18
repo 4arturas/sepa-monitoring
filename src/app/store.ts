@@ -7,6 +7,7 @@ import helperSlice from "../store/helper/Helper.Slice";
 import userSlice from "../components/Login/User.Slice";
 import rootSaga from "../rootSaga";
 import companySlice from "../components/Companies/Companies.Slice";
+import usersSlice from "../components/Users/Users.Slice";
 const sagaMiddleware = createSagaMiddleware()
 const middlewares = [sagaMiddleware];
 
@@ -18,6 +19,7 @@ export const store = configureStore({
   reducer: {
     helper:   helperSlice,
     user:     userSlice,
+    users:    usersSlice,
     company:  companySlice,
     counter:  counterReducer,
     token:    tokenReducer,

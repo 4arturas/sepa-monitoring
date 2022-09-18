@@ -4,6 +4,7 @@ import {useAppSelector} from "../../app/hooks";
 import {Companies} from "./Companies";
 import {useEffect} from "react";
 import {CompanyQuery, companySliceActions} from "./Companies.Slice";
+import {stat} from "fs";
 
 export const CompaniesCell = () => {
     const dispatch = useDispatch();

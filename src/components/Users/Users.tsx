@@ -45,7 +45,7 @@ const columns = [
     {
         title: 'Action',
         render: (first:any, record:User_Contracts_UserResponse) =>
-            <span>Update Delete</span>
+            <span><UserNewEdit user={record}/> Delete</span>
     },
 ];
 
@@ -60,7 +60,7 @@ export const Users : React.FC<UsersProps> = ({users}) => {
 console.log( users );
     return (
         <div>
-            <div style={{float:'right'}}><UserNewEdit/></div>
+            <div style={{float:'right'}}><UserNewEdit user={null}/></div>
             <Table
                 dataSource={users}
                 columns={columns}
