@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import {routes} from "../../routes/Routes";
 
 const NavBar = () => {
     return (
@@ -8,6 +9,7 @@ const NavBar = () => {
             <Link to={'/companies'} data-testid={'companies-link'}>companies</Link> -&nbsp;
             <Link to={'/users'} data-testid={'users-link'}>users</Link> -&nbsp;
             <Link to={'/about'} data-testid={'about-link'}>about</Link>
+            <Link to={routes.login.path} data-testid={'login-link'} style={{float:'right'}}>login</Link>
         </div>
     );
 }
