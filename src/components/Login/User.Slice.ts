@@ -1,5 +1,6 @@
 import {appConfig} from "../../appConfig";
 import {createSlice} from "@reduxjs/toolkit";
+import {Authentication_Contracts_LogInRequest} from "../../services/openapi";
 
 export interface LoginPayload {
     email: string;
@@ -7,7 +8,8 @@ export interface LoginPayload {
 }
 
 export interface User {
-    email: string
+    email: string,
+    jwt: string
 }
 export interface UserSliceState {
     currentUser: null | User;
@@ -30,7 +32,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        login: ( state, { payload } : { payload: LoginPayload } ) => {
+        login: ( state, { payload } : { payload: Authentication_Contracts_LogInRequest } ) => {
             state.login.loading = true;
             console.log( 'logging in', state.currentUser, payload );
         },

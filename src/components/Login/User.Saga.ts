@@ -1,11 +1,15 @@
 import { fork, put, takeEvery } from 'redux-saga/effects';
-import {LoginPayload, userSlice, userSliceActions} from "./User.Slice";
+import {LoginPayload, User, userSlice, userSliceActions} from "./User.Slice";
 import {helperSliceAction} from "../../store/helper/Helper.Slice";
 import {routes} from "../../routes/Routes";
+import { Authentication_Contracts_LogInRequest } from "../../services/openapi";
 
-function* loginMiddleWare() : any {
-    console.log( 'baba' );
-    yield put( helperSliceAction.setRedirectUrl(routes.home.path) );
+function* loginMiddleWare( {payload} : {payload: Authentication_Contracts_LogInRequest } ) : any {
+
+    /*const response:Authentication_Contracts_LogInResponse = yield AuthenticationsService.postV1AuthenticationsAuthenticatorLogin( payload );
+    const user:User = { email: payload.email | 'something wrong' };
+    yield put( userSliceActions.setUser( ))
+    yield put( helperSliceAction.setRedirectUrl(routes.home.path) );*/
 }
 
 function* loginSaga() {
@@ -17,7 +21,7 @@ function* logOutMiddleware() {
 }
 
 function* logoutSaga() {
-    yield takeEvery( userSliceActions.logout as any, loginMiddleWare );
+    yield takeEvery( userSliceActions.logout as any, logOutMiddleware );
 }
 
 export default function* userSaga() {
