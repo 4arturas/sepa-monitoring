@@ -23,7 +23,7 @@ export const OpenAPI: OpenAPIConfig = {
     VERSION: '1',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
-    TOKEN: String(window.localStorage.getItem('token')),
+    TOKEN: undefined,
     USERNAME: undefined,
     PASSWORD: undefined,
     HEADERS: undefined,
