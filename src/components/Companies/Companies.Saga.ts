@@ -7,10 +7,8 @@ import {
 } from "../../services/openapi";
 
 function* companiesSagaMiddleWare( { payload } : { payload: CompanyQuery }) : any {
-    console.log( 'companySagaMiddleWare', 'payload', payload );
     const companiesResponse:Company_Contracts_CompaniesResponse = yield CompaniesService.getV1Companies();
     yield put( companySliceActions.setCompanies(companiesResponse));
-    console.log( 'companySagaMiddleWare', companiesResponse );
 }
 
 function* companiesListQuery() {
