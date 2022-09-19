@@ -39,14 +39,21 @@ export const userSlice = createSlice({
         logout: ( state ) => {
             state.currentUser = null;
             window.localStorage.removeItem(appConfig.storage.user);
+            window.localStorage.removeItem("token"); // TODO remove
         },
         setUser: ( state, { payload }: { payload: User } ) => {
             state.currentUser = payload;
             state.login.loading = payload ? true : false;
             if ( payload )
+            {
                 window.localStorage.setItem(appConfig.storage.user, JSON.stringify(payload));
+                window.localStorage.setItem("token", payload.jwt); // TODO remove
+            }
             else
+            {
                 window.localStorage.removeItem(appConfig.storage.user);
+                window.localStorage.removeItem("token"); // TODO remove
+            }
         }
     }
 });
