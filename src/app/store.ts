@@ -8,6 +8,7 @@ import userSlice from "../components/Login/User.Slice";
 import rootSaga from "../rootSaga";
 import companySlice from "../components/Companies/Companies.Slice";
 import usersSlice from "../components/Users/Users.Slice";
+import paymentsINSTSlice from "../components/Payments/INST/PaymentsINST.Slice";
 const sagaMiddleware = createSagaMiddleware()
 const middlewares = [sagaMiddleware];
 
@@ -17,12 +18,13 @@ const appState: any = {
 
 export const store = configureStore({
   reducer: {
-    helper:   helperSlice,
-    user:     userSlice,
-    users:    usersSlice,
-    company:  companySlice,
-    counter:  counterReducer,
-    token:    tokenReducer,
+    helper:       helperSlice,
+    user:         userSlice,
+    users:        usersSlice,
+    company:      companySlice,
+    counter:      counterReducer,
+    token:        tokenReducer,
+    paymentsINST: paymentsINSTSlice
   },
   preloadedState: appState,
   middleware: (getDefaultMiddleware) =>
