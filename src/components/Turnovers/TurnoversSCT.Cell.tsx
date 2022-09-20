@@ -14,12 +14,12 @@ export const TurnoversSCTCell = () => {
 
     useEffect(() => {
         const query:TurnoversQuery = { companyId: 1, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT };
-        dispatch( turnoversActions.getTurnoversINST( query ) );
+        dispatch( turnoversActions.getTurnoversSCT( query ) );
     }, []);
 
     return <div>
         TurnoversSCTCell
-        <div>{loadingSct && <>Loading...</>}</div>
+        <div>{loadingSct && <>Loading SCT...</>}</div>
         <div>{sct && JSON.stringify(sct)}</div>
     </div>
 }
