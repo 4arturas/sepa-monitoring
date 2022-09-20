@@ -5,20 +5,21 @@ import {
     PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea
 } from "../../../services/openapi";
 import {useEffect} from "react";
-import {PaymentsINSTQuery, paymentsINSTSliceActions} from "./PaymentsINST.Slice";
+import {PaymentsINSTQuery, paymentsSliceActions} from "./PaymentsINST.Slice";
 
 export const PaymentsINSTCell = () => {
     const dispatch = useDispatch();
-    const payments:Payment_Contracts_GenerateResponse|null  = useAppSelector( state => state.paymentsINST.payments );
-    const loading:boolean                                   = useAppSelector( state => state.paymentsINST.loading );
+    const payments:Payment_Contracts_GenerateResponse|null  = useAppSelector( state => state.paymentsINST.inst );
+    const loading:boolean                                   = useAppSelector( state => state.paymentsINST.loadingInst );
 
     useEffect( () => {
-        const q:PaymentsINSTQuery = { companyId: 1, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
-        dispatch( paymentsINSTSliceActions.getPayments( q ) );
+        const query:PaymentsINSTQuery = { companyId: 1, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+        dispatch( paymentsSliceActions.getPaymentsInst( query ) );
     }, [] );
 
     return <div>
         Payments INST
+        { loading && <div>Loading INST...</div> }
         { payments && <div>${JSON.stringify(payments)}</div> }
     </div>
 }

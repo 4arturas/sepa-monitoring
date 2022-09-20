@@ -31,28 +31,40 @@ export interface PaymentsINSTQuery {
 }
 
 export interface PaymentsINST {
-    payments:Payment_Contracts_GenerateResponse|null,
-    loading: boolean
+    inst: Payment_Contracts_GenerateResponse|null,
+    loadingInst: boolean
+    sct: Payment_Contracts_GenerateResponse|null,
+    loadingSct: boolean
 }
 
 const initialState : PaymentsINST = {
-    payments:null,
-    loading:false
+    inst:null,
+    loadingInst:false,
+    sct:null,
+    loadingSct: false
 }
 
-const paymentsINST = createSlice({
-    name: 'paymentsINSTSlice',
+const payments = createSlice({
+    name: 'payments',
     initialState,
     reducers: {
-        getPayments: ( state, { payload } : { payload: PaymentsINSTQuery } ) => {
-            state.loading = true;
+        getPaymentsInst: ( state, { payload } : { payload: PaymentsINSTQuery } ) => {
+            state.loadingInst = true;
         },
-        setPayments: ( state, { payload } : { payload: Payment_Contracts_GenerateResponse } ) => {
-            state.payments = payload;
-            state.loading = false;
+        setPaymentsInst: ( state, { payload } : { payload: Payment_Contracts_GenerateResponse } ) => {
+            state.inst = payload;
+            state.loadingInst = false;
+        },
+
+        getPaymentsSct: ( state, { payload } : { payload: PaymentsINSTQuery } ) => {
+            state.loadingSct = true;
+        },
+        setPaymentsSct: ( state, { payload } : { payload: Payment_Contracts_GenerateResponse } ) => {
+            state.sct = payload;
+            state.loadingSct = false;
         }
     }
 });
 
-export const paymentsINSTSliceActions = paymentsINST.actions;
-export default paymentsINST.reducer;
+export const paymentsSliceActions = payments.actions;
+export default payments.reducer;
