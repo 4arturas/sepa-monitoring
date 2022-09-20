@@ -7,7 +7,6 @@ import {PaymentsSDDCell} from "../components/Payments/SDD/PaymentsSDD.Cell";
 
 export const PaymentsPage = () => {
     const location = useLocation();
-    console.log( location.pathname );
 
     return (
         <div data-testid={'payments-page'}>
