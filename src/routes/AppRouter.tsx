@@ -14,6 +14,10 @@ import {PaymentsSCTCell} from "../components/Payments/PaymentsSCT.Cell";
 import {PaymentsSDDCell} from "../components/Payments/PaymentsSDD.Cell";
 import {TurnoversSCTCell} from "../components/Turnovers/TurnoversSCT.Cell";
 import {TurnoversSDDCell} from "../components/Turnovers/TurnoversSDD.Cell";
+import {BalancesPage} from "../pages/BalancesPage";
+import {BalancesINSTCell} from "../components/Balances/BalancesINST.Cell";
+import {BalancesSCTCell} from "../components/Balances/BalancesSCT.Cell";
+import {BalancesSDDCell} from "../components/Balances/BalancesSDD.Cell";
 
 const AppRouter = () => {
     return (
@@ -28,6 +32,11 @@ const AppRouter = () => {
                 <Route path={routes.turnovers.children.inst.path} element={<TurnoversINSTCell/>}/>
                 <Route path={routes.turnovers.children.sct.path} element={<TurnoversSCTCell/>}/>
                 <Route path={routes.turnovers.children.sdd.path} element={<TurnoversSDDCell/>}/>
+            </Route>
+            <Route path={routes.balances.path} element={<BalancesPage/>}>
+                <Route path={routes.balances.children.inst.path} element={<BalancesINSTCell/>}/>
+                <Route path={routes.balances.children.sct.path} element={<BalancesSCTCell/>}/>
+                <Route path={routes.balances.children.sdd.path} element={<BalancesSDDCell/>}/>
             </Route>
             <Route path={'/companies'} element={<CompaniesPage/>}/>
             <Route path={'/users'} element={<UsersPage/>}/>

@@ -38,5 +38,22 @@ export const routes = {
                 fullPath: '/turnovers/sdd'
             }
         }
+    },
+    balances: {
+        path: '/balances',
+        children: {
+            inst: {
+                path: 'inst',
+                fullPath: '/balances/inst'
+            },
+            sct: {
+                path: 'sct',
+                fullPath: '/balances/sct'
+            },
+            sdd: {
+                path: 'sdd',
+                fullPath: '/balances/sdd'
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import {companiesSaga} from "./components/Companies/Companies.Saga";
 import {usersSaga} from "./components/Users/Users.Saga";
 import {turnoversSaga} from "./components/Turnovers/Turnovers.Saga";
 import paymentsSaga from "./components/Payments/PaymentsINST.Saga";
+import {balancesSaga} from "./components/Balances/Balances.Saga";
 
 export default function* rootSaga() {
     yield all([
@@ -11,6 +12,7 @@ export default function* rootSaga() {
         companiesSaga(),
         usersSaga(),
         paymentsSaga(),
-        turnoversSaga()
+        turnoversSaga(),
+        balancesSaga()
     ]);
 }

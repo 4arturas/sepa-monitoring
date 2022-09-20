@@ -14,8 +14,9 @@ const NavBar = () => {
     return (
         <span>
             <Link to={'/'} data-testid={'main-link'}>main</Link> -&nbsp;
-            { user && <><Link to={'/payments'} data-testid={'payments-link'}>payments</Link> -&nbsp;</> }
+            { user && <><Link to={routes.payments.path} data-testid={'payments-link'}>payments</Link> -&nbsp;</> }
             { user && <><Link to={routes.turnovers.path} data-testid={'turnovers-link'}>Turnovers</Link> -&nbsp;</> }
+            { user && <><Link to={routes.balances.path} data-testid={'balances-link'}>Balances</Link> -&nbsp;</> }
             { user && <><Link to={'/companies'} data-testid={'companies-link'}>companies</Link> -&nbsp;</> }
             { user && <><Link to={'/users'} data-testid={'users-link'}>users</Link> -&nbsp;</> }
             <Link to={'/about'} data-testid={'about-link'}>about</Link>
