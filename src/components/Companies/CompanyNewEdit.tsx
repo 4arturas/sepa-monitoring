@@ -154,7 +154,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Name"
                         name="name"
-                        rules={[{required: true, message: 'Please input name!'}]}
+                        rules={[{required: false, message: 'Please input name!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -163,7 +163,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Host"
                         name="hostSCT"
-                        rules={[{required: true, message: 'Please input host!'}]}
+                        rules={[{required: false, message: 'Please input host!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -171,7 +171,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Database"
                         name="databaseSCT"
-                        rules={[{required: true, message: 'Please input database!'}]}
+                        rules={[{required: false, message: 'Please input database!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -179,7 +179,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Username"
                         name="usernameSCT"
-                        rules={[{required: true, message: 'Please input username!'}]}
+                        rules={[{required: false, message: 'Please input username!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -187,7 +187,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Password"
                         name="passwordSCT"
-                        rules={[{required: true, message: 'Please input password!'}]}
+                        rules={[{required: false, message: 'Please input password!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -197,7 +197,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Host"
                         name="hostINST"
-                        rules={[{required: true, message: 'Please input host!'}]}
+                        rules={[{required: false, message: 'Please input host!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -205,7 +205,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Database"
                         name="databaseINST"
-                        rules={[{required: true, message: 'Please input database!'}]}
+                        rules={[{required: false, message: 'Please input database!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -213,7 +213,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Username"
                         name="usernameINST"
-                        rules={[{required: true, message: 'Please input username!'}]}
+                        rules={[{required: false, message: 'Please input username!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -221,7 +221,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Password"
                         name="passwordINST"
-                        rules={[{required: true, message: 'Please input password!'}]}
+                        rules={[{required: false, message: 'Please input password!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -231,7 +231,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Host"
                         name="hostSDD"
-                        rules={[{required: true, message: 'Please input host!'}]}
+                        rules={[{required: false, message: 'Please input host!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -239,7 +239,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Database"
                         name="databaseSDD"
-                        rules={[{required: true, message: 'Please input database!'}]}
+                        rules={[{required: false, message: 'Please input database!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -247,7 +247,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Username"
                         name="usernameSDD"
-                        rules={[{required: true, message: 'Please input username!'}]}
+                        rules={[{required: false, message: 'Please input username!'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -255,7 +255,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                     <Form.Item
                         label="Password"
                         name="passwordSDD"
-                        rules={[{required: true, message: 'Please input password!'}]}
+                        rules={[{required: false, message: 'Please input password!'}]}
                     >
                         <Input/>
                     </Form.Item>
