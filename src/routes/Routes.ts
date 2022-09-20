@@ -55,5 +55,8 @@ export const routes = {
                 fullPath: '/balances/sdd'
             }
         }
-    }
+    },
+    companies: {
+        path: '/companies'
+    },
 }

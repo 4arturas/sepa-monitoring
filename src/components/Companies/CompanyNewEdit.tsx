@@ -8,6 +8,7 @@ import {
 } from "../../services/openapi";
 import {useNavigate} from "react-router-dom";
 import {EditOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {routes} from "../../routes/Routes";
 
 interface CompanyNewEditProp {
     company?: Company_Contracts_CompanyResponse
@@ -136,7 +137,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                             const result:Company_Contracts_CreateResponse = await CompaniesService.postV1Companies( company );
                             console.log( result );
 
-                            navigate('/companies');
+                            navigate(routes.companies.path);
                             message.success({ content: 'Saved!', key, duration: 2 });
                             setIsModalOpen( false );
                             return true;
