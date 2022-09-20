@@ -1,6 +1,6 @@
 import {appConfig} from "../../appConfig";
 import {createSlice} from "@reduxjs/toolkit";
-import {Authentication_Contracts_LogInRequest} from "../../services/openapi";
+import {Authentication_Contracts_LogInRequest, OpenAPI} from "../../services/openapi";
 
 export interface LoginPayload {
     email: string;
@@ -20,6 +20,9 @@ export interface UserSliceState {
 
 const userData = window.localStorage.getItem(appConfig.storage.user) ?
     JSON.parse(window.localStorage.getItem(appConfig.storage.user) as string) : null;
+if ( userData )
+    OpenAPI.TOKEN = userData.jwt;
+
 
 const initialState : UserSliceState = {
     currentUser: userData,
@@ -39,7 +42,7 @@ export const userSlice = createSlice({
         logout: ( state ) => {
             state.currentUser = null;
             window.localStorage.removeItem(appConfig.storage.user);
-            window.localStorage.removeItem("token"); // TODO remove
+            OpenAPI.TOKEN = undefined;
         },
         setUser: ( state, { payload }: { payload: User } ) => {
             state.currentUser = payload;
@@ -47,12 +50,12 @@ export const userSlice = createSlice({
             if ( payload )
             {
                 window.localStorage.setItem(appConfig.storage.user, JSON.stringify(payload));
-                window.localStorage.setItem("token", payload.jwt); // TODO remove
+                OpenAPI.TOKEN = payload.jwt;
             }
             else
             {
                 window.localStorage.removeItem(appConfig.storage.user);
-                window.localStorage.removeItem("token"); // TODO remove
+                OpenAPI.TOKEN = undefined;
             }
         }
     }

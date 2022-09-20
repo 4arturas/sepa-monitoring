@@ -1,11 +1,10 @@
 import {Button, Form, Input, message, Modal, Transfer} from "antd";
 import {
     Company_Contracts_CompanyResponse,
-    Company_Contracts_CreateResponse, User_Contracts_CompaniesRequest,
+    User_Contracts_CompaniesRequest, User_Contracts_CompaniesResponse,
     User_Contracts_CreateRequest, User_Contracts_UpdateRequest, User_Contracts_UserCompanies,
     User_Contracts_UserCompanyResponse,
-    User_Contracts_UserResponse,
-    UsersService
+    User_Contracts_UserResponse, UsersService
 } from "../../services/openapi";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -24,9 +23,9 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
 
     const dispatch = useDispatch();
     const companiesList:Array<Company_Contracts_CompanyResponse> = useAppSelector( state => state.company.companiesList );
-    const companiesListLoading:boolean = useAppSelector( state => state.company.loading );
+    // const companiesListLoading:boolean = useAppSelector( state => state.company.loading );
     const userCompanies: Array<User_Contracts_UserCompanyResponse> = useAppSelector( state => state.users.companies );
-    const useCompaniesLoading: boolean = useAppSelector( state => state.users.loading );
+    // const useCompaniesLoading: boolean = useAppSelector( state => state.users.loading );
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -35,27 +34,28 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
         email: string|null|undefined;
         allowIp: string|null|undefined;
         isAdmin: boolean|null|undefined;
-        companiesList:Array<Company_Contracts_CompanyResponse>;
+        company:Array<Company_Contracts_CompanyResponse>;
         userCompanies: Array<User_Contracts_UserCompanyResponse>
     }
-    const [model, setModel] = useState<Model>({ email: user?.email, allowIp: user?.allowIp, isAdmin: user?.isAdmin, companiesList: companiesList, userCompanies: userCompanies });
-    const [transfer, setTransfer] = useState<TransferItem[]>();
-    const [targetKeys, setTargetKeys] = useState<string[]>([]);
-    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+    const [model, setModel] = useState<Model>({ email: user?.email, allowIp: user?.allowIp, isAdmin: user?.isAdmin, company: companiesList, userCompanies: userCompanies });
+    const [targetKeys, setTargetKeys] = useState<string[]>(userCompanies.map( (company:User_Contracts_UserCompanyResponse) => String(company.companyId)));
 
-    const showModal = () => {
-
+    const showModal = async () => {
 
         const usersQuery:UsersQuery = {id:1};
         dispatch( usersSliceActions.getUserCompanies( usersQuery ) );
 
+        const userCompanies2:User_Contracts_CompaniesResponse = await UsersService.getV1UsersCompanies( 1 );
+
+        const userTargetCompanies: Array<string>= userCompanies2?.company?.map( (company:User_Contracts_UserCompanyResponse) => String(company.companyId) ) || [];
+        setTargetKeys( userTargetCompanies );
+
+
         const companiesQuery:CompanyQuery = {name:''};
         dispatch( companySliceActions.getCompanies( companiesQuery ) );
 
-        const tmpModel:Model = { email: user?.email, allowIp: user?.allowIp, isAdmin: user?.isAdmin, companiesList: companiesList, userCompanies: userCompanies };
+        const tmpModel:Model = { email: user?.email, allowIp: user?.allowIp, isAdmin: user?.isAdmin, company: companiesList, userCompanies: userCompanies };
         setModel( tmpModel );
-
-        setTargetKeys( userCompanies.map( (company:User_Contracts_UserCompanyResponse) => String(company.companyId)) );
 
         setIsModalOpen(true);
     };
@@ -72,7 +72,13 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
 
             { user ? <EditOutlined onClick={showModal} style={{fontSize:'18px'}}/> : <PlusCircleOutlined onClick={showModal} style={{fontSize:'18px'}}/> }
 
-            <Modal title={`${user?'Edit':'Add'} user`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal
+                title={`${user?'Edit':'Add'} user`}
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={null}
+            >
                 <Form
                     data-testid='user-edit-component'
                     name="basic"
@@ -80,7 +86,6 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
                     wrapperCol={{span: 16}}
                     initialValues={model || {}}
                     onFinish={async (values: any) => {
-                        console.log( values );
                         const key = 'key';
                         message.loading({ content: 'Saving user...', key });
                         try {
@@ -88,7 +93,7 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
                             if ( user )
                             {
                                 const userUpdateRequest:User_Contracts_UpdateRequest = {email: values.email, allowIp: values.allowIp, isAdmin: values.isAdmin };
-                                // dispatch( usersSliceActions.updateUserRequest({ id: user.id || -1/*here we always have id, the case -1 is impossible*/, request: userUpdateRequest } ) );
+                                dispatch( usersSliceActions.updateUserRequest({ id: user.id || -1/*here we always have id, the case -1 is impossible*/, request: userUpdateRequest } ) );
 
                                 const assignedCompanies:Array<User_Contracts_UserCompanies> = values.company.map( (c:string) => { return { companyId:Number(c) } } );
                                 const requestCompanies:User_Contracts_CompaniesRequest = { companies: assignedCompanies };
@@ -140,7 +145,7 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
                     <Form.Item
                         label="User companies"
                         name="company"
-                        rules={[{required: true, message: 'Please select at least one company!'}]}
+                        rules={[{required: false, message: 'Please select at least one company!'}]}
                     >
                         <Transfer
                             dataSource={ companiesList.map( (company:Company_Contracts_CompanyResponse) => {
@@ -149,7 +154,7 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
                             } )}
                             titles={['Source', 'Target']}
                             targetKeys={targetKeys}
-                            // selectedKeys={selectedKeys}
+                            // selectedKeys={targetKeys}
                             onChange={(nextTargetKeys: string[], direction: TransferDirection, moveKeys: string[]) => {
                                 /*console.log('targetKeys:', nextTargetKeys);
                                 console.log('direction:', direction);
@@ -163,9 +168,9 @@ export const UserNewEdit : React.FC<UserNewEditProps> = ( { user } ) => {
                     </Form.Item>
 
 
-                    <Form.Item style={{textAlign:'center'}}>
+                    <Form.Item style={{textAlign:'right'}}>
                         <Button htmlType="submit">
-                            Create
+                            {`${user?'Edit':'Add'} user`}
                         </Button>
                     </Form.Item>
                 </Form>

@@ -3,11 +3,9 @@ import {fork, put, takeEvery} from "redux-saga/effects";
 import {
     Company_Contracts_CreateResponse, Microsoft_AspNetCore_Mvc_OkResult, User_Contracts_CompaniesRequest,
     User_Contracts_CompaniesResponse,
-    User_Contracts_CreateRequest, User_Contracts_UpdateRequest, User_Contracts_UserCompanies,
+    User_Contracts_UpdateRequest,
     UsersService
 } from "../../services/openapi";
-import {userSlice} from "../Login/User.Slice";
-import {unstable_renderSubtreeIntoContainer} from "react-dom";
 
 function* getUserCompaniesMiddleWare( { payload } : { payload: UsersQuery } ) : any {
     const userCompanies:User_Contracts_CompaniesResponse = yield UsersService.getV1UsersCompanies( payload.id );
@@ -31,7 +29,6 @@ function *updateUser() {
 
 function* attachCompanyForTheUserMiddleware( { payload } : { payload: { userId:number, request: User_Contracts_CompaniesRequest } } ) : any {
     const result:Microsoft_AspNetCore_Mvc_OkResult = yield UsersService.postV1UsersCompanies( payload.userId, payload.request );
-    console.log( result );
     yield put( usersSliceActions.attachCompanyForTheUserResponse( result ) );
 }
 
