@@ -3,9 +3,6 @@ import React, {useEffect, useState} from "react";
 import { Company_Contracts_CompanyResponse} from "../../services/openapi";
 import {CompanyNewEdit} from "./CompanyNewEdit";
 import {DeleteOutlined} from "@ant-design/icons";
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "../../app/hooks";
-import {CompanyQuery, companySliceActions} from "./Companies.Slice";
 
 const columns = [
     {
