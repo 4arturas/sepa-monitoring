@@ -61,7 +61,7 @@ function* getPaymentSct() {
     yield takeEvery( paymentsSliceActions.getPaymentsSct as any, getPaymentSctMiddleware );
 }
 
-export default function* paymentINSTSaga()
+export default function* paymentsSaga()
 {
     yield fork( getPaymentInst );
     yield fork( getPaymentSct );

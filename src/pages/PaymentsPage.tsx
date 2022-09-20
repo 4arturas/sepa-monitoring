@@ -1,9 +1,9 @@
 import {PaymentsCell} from "../components/Payments/PaymentsCell";
 import {useLocation} from "react-router-dom";
 import {routes} from "../routes/Routes";
-import {PaymentsINSTCell} from "../components/Payments/INST/PaymentsINST.Cell";
-import {PaymentsSCTCell} from "../components/Payments/SCT/PaymentsSCT.Cell";
-import {PaymentsSDDCell} from "../components/Payments/SDD/PaymentsSDD.Cell";
+import {PaymentsINSTCell} from "../components/Payments/PaymentsINST.Cell";
+import {PaymentsSCTCell} from "../components/Payments/PaymentsSCT.Cell";
+import {PaymentsSDDCell} from "../components/Payments/PaymentsSDD.Cell";
 
 export const PaymentsPage = () => {
     const location = useLocation();

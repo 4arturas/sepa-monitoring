@@ -6,7 +6,6 @@ import {
 } from "../../services/openapi";
 import {useEffect} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
-import {PaymentsINSTQuery} from "../Payments/INST/PaymentsINST.Slice";
 
 export const TurnoversINSTCell = () => {
     const dispatch = useDispatch();
