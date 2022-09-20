@@ -1,28 +1,18 @@
-import React, {useEffect} from "react";
-import {
-    PaymentsService,
-    PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea,
-    PBX_Monitoring_SEPA_Infrastructure_Enum_Direction
-} from "../../services/openapi";
-import {Breadcrumb} from "antd";
-import {Link} from "react-router-dom";
+import React from "react";
+import {NavLink} from "react-router-dom";
 import {routes} from "../../routes/Routes";
 
 export const PaymentsCell = () => {
 
-    useEffect( () => {
-        const businessArea = PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT;
-        // const direction = PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN;
-        // PaymentsService.getV1Payments(1, )
-    }, [] );
+    let activeStyle = {
+        textDecoration: "underline",
+    };
 
     return (
         <div>
-            <Breadcrumb style={{ margin: '0  0' }}>
-                <Breadcrumb.Item><Link to={routes.payments.children.inst.path}>INST</Link></Breadcrumb.Item>
-                <Breadcrumb.Item><Link to={routes.payments.children.sct.path}>SCT</Link></Breadcrumb.Item>
-                <Breadcrumb.Item><Link to={routes.payments.children.sdd.path}>SDD</Link></Breadcrumb.Item>
-            </Breadcrumb>
+            <NavLink to={routes.payments.children.inst.path} style={({ isActive }) => isActive ? activeStyle : undefined}>INST</NavLink>&nbsp;/&nbsp;
+            <NavLink to={routes.payments.children.sct.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SCT</NavLink>&nbsp;/&nbsp;
+            <NavLink to={routes.payments.children.sdd.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SDD</NavLink>
         </div>
     );
 }
