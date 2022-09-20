@@ -10,6 +10,9 @@ import {routes} from "./Routes";
 import {PaymentsINSTCell} from "../components/Payments/INST/PaymentsINST.Cell";
 import {PaymentsSCTCell} from "../components/Payments/SCT/PaymentsSCT.Cell";
 import {PaymentsSDDCell} from "../components/Payments/SDD/PaymentsSDD.Cell";
+import {TurnoversPage} from "../pages/TurnoversPage";
+import {Turnovers} from "../components/Turnovers/Turnovers";
+import {TurnoversINSTCell} from "../components/Turnovers/TurnoversINST.Cell";
 
 const AppRouter = () => {
     return (
@@ -19,6 +22,11 @@ const AppRouter = () => {
                 <Route path={routes.payments.children.inst.path} element={<PaymentsINSTCell/>}/>
                 <Route path={routes.payments.children.sct.path} element={<PaymentsSCTCell/>}/>
                 <Route path={routes.payments.children.sdd.path} element={<PaymentsSDDCell/>}/>
+            </Route>
+            <Route path={routes.turnovers.path} element={<TurnoversPage/>}>
+                <Route path={routes.turnovers.children.inst.path} element={<TurnoversINSTCell/>}/>
+                <Route path={routes.turnovers.children.sct.path} element={<PaymentsSCTCell/>}/>
+                <Route path={routes.turnovers.children.sdd.path} element={<PaymentsSDDCell/>}/>
             </Route>
             <Route path={'/companies'} element={<CompaniesPage/>}/>
             <Route path={'/users'} element={<UsersPage/>}/>

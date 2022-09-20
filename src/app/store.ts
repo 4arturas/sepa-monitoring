@@ -9,6 +9,7 @@ import rootSaga from "../rootSaga";
 import companySlice from "../components/Companies/Companies.Slice";
 import usersSlice from "../components/Users/Users.Slice";
 import paymentsINSTSlice from "../components/Payments/INST/PaymentsINST.Slice";
+import turnoversSlice from "../components/Turnovers/Turnovers.Slice";
 const sagaMiddleware = createSagaMiddleware()
 const middlewares = [sagaMiddleware];
 
@@ -24,7 +25,8 @@ export const store = configureStore({
     company:      companySlice,
     counter:      counterReducer,
     token:        tokenReducer,
-    paymentsINST: paymentsINSTSlice
+    paymentsINST: paymentsINSTSlice,
+    turnovers:    turnoversSlice
   },
   preloadedState: appState,
   middleware: (getDefaultMiddleware) =>

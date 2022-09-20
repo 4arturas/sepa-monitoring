@@ -21,5 +21,22 @@ export const routes = {
                 fullPath: '/payments/sdd'
             }
         }
+    },
+    turnovers: {
+        path: '/turnovers',
+        children: {
+            inst: {
+                path: 'inst',
+                fullPath: '/turnovers/inst'
+            },
+            sct: {
+                path: 'sct',
+                fullPath: '/turnovers/sct'
+            },
+            sdd: {
+                path: 'sdd',
+                fullPath: '/turnovers/sdd'
+            }
+        }
     }
 }
