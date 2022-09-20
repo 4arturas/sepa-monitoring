@@ -1,6 +1,7 @@
 import {fork, put, takeEvery} from "redux-saga/effects";
 import {PaymentsINSTQuery, paymentsSliceActions} from "./PaymentsINST.Slice";
-import {Payment_Contracts_GenerateResponse, PaymentsService} from "../../../services/openapi";
+import {Payment_Contracts_GenerateResponse, PaymentsService} from "../../services/openapi";
+
 
 function* getPaymentInstMiddleware( { payload } : { payload: PaymentsINSTQuery } ) : any {
     const response:Payment_Contracts_GenerateResponse = yield PaymentsService.getV1Payments(

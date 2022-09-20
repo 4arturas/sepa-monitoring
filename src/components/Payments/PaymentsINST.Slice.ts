@@ -6,7 +6,8 @@ import {
     PBX_Monitoring_SEPA_Infrastructure_Enum_Direction,
     PBX_Monitoring_SEPA_Infrastructure_Enum_OrderBy,
     PBX_Monitoring_SEPA_Infrastructure_Enum_PaymentStatus
-} from "../../../services/openapi";
+} from "../../services/openapi";
+
 
 export interface PaymentsINSTQuery {
     companyId: number,
