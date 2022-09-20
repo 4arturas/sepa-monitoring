@@ -20,7 +20,7 @@ export const TurnoversINSTCell = () => {
 
     return <div>
         TurnoversINSTCell
-        <div>{loadingInst && <>Loading...</>}</div>
+        <div>{loadingInst && <>Loading INST...</>}</div>
         <div>{inst && JSON.stringify(inst)}</div>
     </div>
 }
