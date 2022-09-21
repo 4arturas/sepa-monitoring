@@ -20,7 +20,7 @@ export interface UserInBrowser {
     userId: number,
     email: string,
     role: string,
-    organizations: Array<UserInBrowserOrganization>
+    companies: Array<UserInBrowserOrganization>
     jwt: string
 }
 export interface UserSliceState {
