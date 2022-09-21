@@ -17,24 +17,9 @@ export const PaymentsCell = () => {
         <div>
             { user &&
                 <>
-                    {
-                        user?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT) ) &&
-                        <>
-                            <NavLink to={routes.payments.children.inst.path} style={({ isActive }) => isActive ? activeStyle : undefined}>INST</NavLink>&nbsp;/&nbsp;
-                        </>
-                    }
-                    {
-                        user?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT) ) &&
-                        <>
-                            <NavLink to={routes.payments.children.sct.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SCT</NavLink>&nbsp;/&nbsp;
-                        </>
-                    }
-                    {
-                        user?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SDD) ) &&
-                        <>
-                            <NavLink to={routes.payments.children.sdd.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SDD</NavLink>
-                        </>
-                    }
+                    { user?.instIsSet && <><NavLink to={routes.payments.children.inst.path} style={({ isActive }) => isActive ? activeStyle : undefined}>INST</NavLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</> }
+                    { user?.sctIsSet && <><NavLink to={routes.payments.children.sct.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SCT</NavLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</> }
+                    { user?.sddIsSet && <><NavLink to={routes.payments.children.sdd.path} style={({ isActive }) => isActive ? activeStyle : undefined}>SDD</NavLink></> }
                 </>
             }
         </div>

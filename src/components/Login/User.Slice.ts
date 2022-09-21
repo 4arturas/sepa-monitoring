@@ -22,7 +22,10 @@ export interface UserInBrowser {
     role: string,
     companies: Array<UserInBrowserOrganization>
     selectedCompany: UserInBrowserOrganization | null
-    jwt: string
+    jwt: string,
+    sctIsSet: boolean,
+    instIsSet: boolean,
+    sddIsSet: boolean
 }
 export interface UserSliceState {
     currentUser: null | UserInBrowser;
@@ -57,15 +60,19 @@ export const userSlice = createSlice({
             OpenAPI.TOKEN = undefined;
         },
         setUserInBrowser: (state, { payload }: { payload: UserInBrowser } ) => {
-            state.currentUser = payload;
             state.login.loading = payload ? true : false;
             if ( payload )
             {
+                payload.sctIsSet    = payload?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT))!==undefined
+                payload.instIsSet   = payload?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT))!==undefined
+                payload.sddIsSet    = payload?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SDD))!==undefined
+                state.currentUser   = payload;
                 window.localStorage.setItem(appConfig.storage.user, JSON.stringify(payload));
                 OpenAPI.TOKEN = payload.jwt;
             }
             else
             {
+                state.currentUser = null;
                 window.localStorage.removeItem(appConfig.storage.user);
                 OpenAPI.TOKEN = undefined;
             }

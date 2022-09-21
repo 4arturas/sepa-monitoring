@@ -16,10 +16,9 @@ export const PaymentsINSTCell = () => {
     const payments:Payment_Contracts_GenerateResponse | null    = useAppSelector( state => state.payments.inst );
     const loading:boolean                                       = useAppSelector( state => state.payments.loadingInst );
     const currentUser:UserInBrowser | null                      = useAppSelector( state => state.user.currentUser );
-    const [businessAreaIsSet]                                   = useState<boolean>(currentUser?.selectedCompany?.connections.find( connection => connection?.includes(PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT))!==undefined);
 
     useEffect( () => {
-        if ( businessAreaIsSet )
+        if ( currentUser?.instIsSet )
         {
             const query:PaymentsINSTQuery = { companyId: 1, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
             dispatch( paymentsSliceActions.getPaymentsInst( query ) );
@@ -27,8 +26,8 @@ export const PaymentsINSTCell = () => {
     }, [] );
 
     return <div>
-        { !businessAreaIsSet && <Alert showIcon={true} type='info' message={'Business area is not set'} /> }
-        { businessAreaIsSet && loading && <div><Spin/> Loading INST...</div> }
-        { businessAreaIsSet && payments && <div>${JSON.stringify(payments)}</div> }
+        { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={'Business area is not set'} /> }
+        { currentUser?.instIsSet && loading && <div><Spin/> Loading INST...</div> }
+        { currentUser?.instIsSet && payments && <div>${JSON.stringify(payments)}</div> }
     </div>
 }

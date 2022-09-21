@@ -64,7 +64,7 @@ export const Login: React.FC<LoginProps> = () => {
                         const jwtDecoded:any = jwtDecode(localToken);
                         const userId:number = jwtDecoded.sub;
                         const role:string = jwtDecoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-                        const userInBrowserWithoutOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, companies: [], jwt:localToken, selectedCompany: null };
+                        const userInBrowserWithoutOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, companies: [], jwt:localToken, selectedCompany: null, sctIsSet: false, instIsSet: false, sddIsSet: false };
                         dispatch( userSliceActions.setUserInBrowser( userInBrowserWithoutOrganizations ) );
 
                         const userCompanies:User_Contracts_CompaniesResponse = await UsersService.getV1UsersCompanies(userId);
@@ -79,7 +79,7 @@ export const Login: React.FC<LoginProps> = () => {
                                 companies.push( company );
                             }
 
-                        const userInBrowserWithOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, companies: companies, jwt:localToken, selectedCompany: null };
+                        const userInBrowserWithOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, companies: companies, jwt:localToken, selectedCompany: null, sctIsSet: false, instIsSet: false, sddIsSet: false };
                         dispatch( userSliceActions.setUserInBrowser( userInBrowserWithOrganizations ) );
 
                         message.success({ content: 'Welcome!', key: loginKey, duration: 2 });

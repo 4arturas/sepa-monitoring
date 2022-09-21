@@ -34,7 +34,7 @@ export const ChangeCompany = () => {
                                     {
                                         dispatch(
                                             userSliceActions.setUserInBrowser(
-                                                { userId: user?.userId, email: user?.email, role:user?.role, companies: user?.companies, jwt:user?.jwt, selectedCompany: organization }
+                                                { userId: user?.userId, email: user?.email, role:user?.role, companies: user?.companies, jwt:user?.jwt, selectedCompany: organization, sctIsSet: false, instIsSet: false, sddIsSet: false }
                                             )
                                         );
                                         setIsModalOpen( false );
