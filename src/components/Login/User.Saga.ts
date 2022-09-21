@@ -1,5 +1,5 @@
 import { fork, put, takeEvery } from 'redux-saga/effects';
-import {LoginPayload, User, userSlice, userSliceActions} from "./User.Slice";
+import {userSliceActions} from "./User.Slice";
 import {helperSliceAction} from "../../store/helper/Helper.Slice";
 import {routes} from "../../routes/Routes";
 import { Authentication_Contracts_LogInRequest } from "../../services/openapi";

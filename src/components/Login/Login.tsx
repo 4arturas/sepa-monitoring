@@ -6,11 +6,9 @@ import {
     AuthenticationsService
 } from "../../services/openapi";
 import { useNavigate } from "react-router-dom";
-import {selectToken, setToken} from "./loginSlice";
-import {useDispatch} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectCount} from "../../features/counter/counterSlice";
-import {User, userSliceActions, UserSliceState} from "./User.Slice";
+import {UserInBrowser, userSliceActions} from "./User.Slice";
+import jwtDecode from "jwt-decode";
 
 
 interface LoginProps {
@@ -19,7 +17,7 @@ interface LoginProps {
 
 export const Login: React.FC<LoginProps> = () => {
 
-    const loggedInUser:User|null    = useAppSelector( (state) => state.user.currentUser );
+    const loggedInUser:UserInBrowser|null    = useAppSelector( (state) => state.user.currentUser );
     const loginState                = useAppSelector( state => state.user.login );
 
     const dispatch = useAppDispatch();
@@ -58,7 +56,11 @@ export const Login: React.FC<LoginProps> = () => {
                         }
 
                         const localToken:string = String(response.token);
-                        dispatch( userSliceActions.setUser( { email:values.email, jwt:localToken } ) );
+
+                        const jwtDecoded:any = jwtDecode(localToken);
+                        const role:string = jwtDecoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+                        const userInBrowser:UserInBrowser = { email:values.email, role:role, jwt:localToken };
+                        dispatch( userSliceActions.setUserInBrowser( userInBrowser ) );
 
                         message.success({ content: 'Welcome!', key: loginKey, duration: 2 });
                         navigate('/');

@@ -7,13 +7,13 @@ export interface LoginPayload {
     code: string;
 }
 
-export interface User {
+export interface UserInBrowser {
     email: string,
     role: string,
     jwt: string
 }
 export interface UserSliceState {
-    currentUser: null | User;
+    currentUser: null | UserInBrowser;
     login: {
         loading: boolean;
     }
@@ -44,7 +44,7 @@ export const userSlice = createSlice({
             window.localStorage.removeItem(appConfig.storage.user);
             OpenAPI.TOKEN = undefined;
         },
-        setUser: ( state, { payload }: { payload: User } ) => {
+        setUserInBrowser: (state, { payload }: { payload: UserInBrowser } ) => {
             state.currentUser = payload;
             state.login.loading = payload ? true : false;
             if ( payload )
