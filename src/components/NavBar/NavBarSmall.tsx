@@ -14,7 +14,8 @@ export const NavBarSmall : React.FC<NavBarSmallInterface> = ( { sctPath, instPat
     const user:UserInBrowser | null = useAppSelector(state => state.user.currentUser );
 
     let activeStyle = {
-        textDecoration: "underline",
+        textDecoration: 'underline',
+        fontWeight: 'bold'
     };
 
     return (
@@ -24,6 +25,7 @@ export const NavBarSmall : React.FC<NavBarSmallInterface> = ( { sctPath, instPat
                     { user?.instIsSet && <><NavLink to={instPath} style={({ isActive }) => isActive ? activeStyle : undefined}>INST</NavLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</> }
                     { user?.sctIsSet && <><NavLink to={sctPath} style={({ isActive }) => isActive ? activeStyle : undefined}>SCT</NavLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</> }
                     { user?.sddIsSet && <><NavLink to={sddPath} style={({ isActive }) => isActive ? activeStyle : undefined}>SDD</NavLink></> }
+                    <hr/>
                 </>
             }
         </div>
