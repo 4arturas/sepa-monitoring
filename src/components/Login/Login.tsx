@@ -69,12 +69,16 @@ export const Login: React.FC<LoginProps> = () => {
 
                         const userCompanies:User_Contracts_CompaniesResponse = await UsersService.getV1UsersCompanies(userId);
                         const companies:Array<UserInBrowserOrganization> = [];
-                        userCompanies?.company?.map(  async c => { {
-                            const res:Company_Contracts_CompanyResponse = await CompaniesService.getV1Companies1(c.companyId || -1);
-                            const connections: Array<PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea | undefined> = res?.connections?.map( conn => (conn.businessArea) ) || [];
-                            const company:UserInBrowserOrganization = { name: c.companyName, connections: connections };
-                            companies.push( company );
-                        }} );
+                        if ( userCompanies.company )
+                            for ( let i = 0; i < userCompanies.company.length; i++ )
+                            {
+                                const c = userCompanies.company[i];
+                                const res:Company_Contracts_CompanyResponse = await CompaniesService.getV1Companies1(c.companyId || -1);
+                                const connections: Array<PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea | undefined> = res?.connections?.map( conn => (conn.businessArea) ) || [];
+                                const company:UserInBrowserOrganization = { name: c.companyName, connections: connections };
+                                companies.push( company );
+                            }
+                        
                         const userInBrowserWithOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, organizations: companies, jwt:localToken };
                         dispatch( userSliceActions.setUserInBrowser( userInBrowserWithOrganizations ) );
 
