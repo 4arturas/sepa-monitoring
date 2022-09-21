@@ -11,7 +11,14 @@ import usersSlice from "../components/Users/Users.Slice";
 import turnoversSlice from "../components/Turnovers/Turnovers.Slice";
 import paymentsINSTSlice from "../components/Payments/PaymentsINST.Slice";
 import balancesSlice from "../components/Balances/Balances.Slice";
-const sagaMiddleware = createSagaMiddleware()
+
+let sagaMonitor:any = {};
+const sagaMiddleware = createSagaMiddleware({
+  sagaMonitor: sagaMonitor,
+  onError: function( error: Error, { sagaStack } : { sagaStack: string } ){
+    console.log('sagaError', error );
+    console.log('sagaStack', sagaStack );
+  }})
 const middlewares = [sagaMiddleware];
 
 const appState: any = {
