@@ -3,11 +3,15 @@ import {Alert, Button, Form, Input, message} from "antd";
 import {
     Authentication_Contracts_LogInRequest,
     Authentication_Contracts_LogInResponse,
-    AuthenticationsService
+    AuthenticationsService,
+    CompaniesService,
+    Company_Contracts_CompanyResponse, PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea,
+    User_Contracts_CompaniesResponse,
+    UsersService
 } from "../../services/openapi";
 import { useNavigate } from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {UserInBrowser, userSliceActions} from "./User.Slice";
+import {UserInBrowser, UserInBrowserOrganization, userSliceActions} from "./User.Slice";
 import jwtDecode from "jwt-decode";
 
 
@@ -58,9 +62,21 @@ export const Login: React.FC<LoginProps> = () => {
                         const localToken:string = String(response.token);
 
                         const jwtDecoded:any = jwtDecode(localToken);
+                        const userId:number = jwtDecoded.sub;
                         const role:string = jwtDecoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-                        const userInBrowser:UserInBrowser = { email:values.email, role:role, jwt:localToken };
-                        dispatch( userSliceActions.setUserInBrowser( userInBrowser ) );
+                        const userInBrowserWithoutOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, organizations: [], jwt:localToken };
+                        dispatch( userSliceActions.setUserInBrowser( userInBrowserWithoutOrganizations ) );
+
+                        const userCompanies:User_Contracts_CompaniesResponse = await UsersService.getV1UsersCompanies(userId);
+                        const companies:Array<UserInBrowserOrganization> = [];
+                        userCompanies?.company?.map(  async c => { {
+                            const res:Company_Contracts_CompanyResponse = await CompaniesService.getV1Companies1(c.companyId || -1);
+                            const connections: Array<PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea | undefined> = res?.connections?.map( conn => (conn.businessArea) ) || [];
+                            const company:UserInBrowserOrganization = { name: c.companyName, connections: connections };
+                            companies.push( company );
+                        }} );
+                        const userInBrowserWithOrganizations:UserInBrowser = { userId:userId, email:values.email, role:role, organizations: companies, jwt:localToken };
+                        dispatch( userSliceActions.setUserInBrowser( userInBrowserWithOrganizations ) );
 
                         message.success({ content: 'Welcome!', key: loginKey, duration: 2 });
                         navigate('/');

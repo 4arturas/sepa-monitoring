@@ -1,15 +1,26 @@
 import {appConfig} from "../../appConfig";
 import {createSlice} from "@reduxjs/toolkit";
-import {Authentication_Contracts_LogInRequest, OpenAPI} from "../../services/openapi";
+import {
+    Authentication_Contracts_LogInRequest,
+    OpenAPI,
+    PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea
+} from "../../services/openapi";
 
 export interface LoginPayload {
     email: string;
     code: string;
 }
 
+export interface UserInBrowserOrganization {
+    name: string | null | undefined,
+    connections: Array<PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea | undefined>
+}
+
 export interface UserInBrowser {
+    userId: number,
     email: string,
     role: string,
+    organizations: Array<UserInBrowserOrganization>
     jwt: string
 }
 export interface UserSliceState {
