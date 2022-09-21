@@ -31,6 +31,7 @@ interface Model {
 }
 
 export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
+    const [form] = Form.useForm();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -81,7 +82,6 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                         usernameSDD = connection.username;
                         break;
                 }
-                console.log( connection );
             });
 
             const tempModel:Model = {
@@ -113,6 +113,7 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
             <Modal title={`${company ? 'Edit' : 'Add'} organization`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Form
                     data-testid='login-component'
+                    form={form}
                     name="basic"
                     labelCol={{span: 8}}
                     wrapperCol={{span: 16}}
@@ -122,20 +123,42 @@ export const CompanyNewEdit : React.FC<CompanyNewEditProp> = ( {company} ) => {
                         const key = 'key';
                         message.loading({ content: 'Saving company...', key });
                         try {
-                            const businessArea:string = PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT;
-                            const connections: Array<Company_Contracts_ConnectionCreateRequest> = [
-                                {
-                                    businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT,
-                                    host: '172.23.1.250',
-                                    database: 'PBX.Sepa.SCT.Kreda',
-                                    username: 'monitoring',
-                                    password: ''
-                                }
-                            ];
 
-                            const company:Company_Contracts_CreateRequest = {name: values.name, connections: connections };
-                            const result:Company_Contracts_CreateResponse = await CompaniesService.postV1Companies( company );
-                            console.log( result );
+                            const connections: Array<Company_Contracts_ConnectionCreateRequest> = [];
+                            if ( values.hostINST && values.hostINST && values.databaseINST && values.usernameINST && values.passwordINST )
+                            {
+                                const instConnection: Company_Contracts_ConnectionCreateRequest = {
+                                    businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT,
+                                    host: values.hostINST,
+                                    database: values.databaseINST,
+                                    username: values.usernameINST,
+                                    password: values.passwordINST
+                                };
+                                connections.push(instConnection);
+                            }
+                            if ( values.hostSCT && values.hostSCT && values.databaseSCT && values.usernameSCT && values.passwordSCT ) {
+                                const sctConnection: Company_Contracts_ConnectionCreateRequest = {
+                                    businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SCT,
+                                    host: values.hostSCT,
+                                    database: values.databaseSCT,
+                                    username: values.usernameSCT,
+                                    password: values.passwordSCT
+                                };
+                                connections.push( sctConnection );
+                            }
+                            if ( values.hostSDD && values.hostSDD && values.databaseSDD && values.usernameSCT && values.passwordSDD ) {
+                                const sddConnection: Company_Contracts_ConnectionCreateRequest = {
+                                    businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_SDD,
+                                    host: values.hostSDD,
+                                    database: values.databaseSDD,
+                                    username: values.usernameSDD,
+                                    password: values.passwordSDD
+                                };
+                                connections.push( sddConnection );
+                            }
+
+                            const companyRequest:Company_Contracts_CreateRequest = {name: values.name, connections: connections };
+                            const result:Company_Contracts_CreateResponse = await (company ? CompaniesService.putV1Companies( company.id || -1, companyRequest ) : CompaniesService.postV1Companies( companyRequest ) );
 
                             navigate(routes.companies.path);
                             message.success({ content: 'Saved!', key, duration: 2 });
