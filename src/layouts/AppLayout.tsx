@@ -31,6 +31,6 @@ export const AppLayout: React.FC = () => (
             </Breadcrumb>
             <div className="site-layout-content"><AppRouter/></div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>BBS Design ©2018 Created by Arturas</Footer>
+        <Footer style={{ textAlign: 'center' }}>BBS Design ©2022</Footer>
     </Layout>
 );
