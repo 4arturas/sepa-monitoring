@@ -15,13 +15,13 @@ const NavBar = () => {
 
     return (
         <span>
-            <Link to={'/'} data-testid={'main-link'}>main</Link> -&nbsp;
-            { user && <><Link to={routes.payments.path} data-testid={'payments-link'}>payments</Link> -&nbsp;</> }
+            <Link to={'/'} data-testid={'main-link'}>Main</Link> -&nbsp;
+            { user && <><Link to={routes.payments.path} data-testid={'payments-link'}>Payments</Link> -&nbsp;</> }
             { user && <><Link to={routes.turnovers.path} data-testid={'turnovers-link'}>Turnovers</Link> -&nbsp;</> }
             { user && <><Link to={routes.balances.path} data-testid={'balances-link'}>Balances</Link> -&nbsp;</> }
             { (user && user.role === ROLE_ADMIN) && <><Link to={routes.companies.path} data-testid={'companies-link'}>Companies</Link> -&nbsp;</> }
             { (user && user.role === ROLE_ADMIN) && <><Link to={'/users'} data-testid={'users-link'}>Users</Link> -&nbsp;</> }
-            <Link to={'/about'} data-testid={'about-link'}>about</Link>
+            <Link to={'/about'} data-testid={'about-link'}>About</Link>
 
             { !user &&
                 <Tooltip title={'Login'}>
