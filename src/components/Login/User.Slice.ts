@@ -9,6 +9,7 @@ export interface LoginPayload {
 
 export interface User {
     email: string,
+    role: string,
     jwt: string
 }
 export interface UserSliceState {
@@ -37,7 +38,6 @@ export const userSlice = createSlice({
     reducers: {
         login: ( state, { payload } : { payload: Authentication_Contracts_LogInRequest } ) => {
             state.login.loading = true;
-            console.log( 'logging in', state.currentUser, payload );
         },
         logout: ( state ) => {
             state.currentUser = null;

@@ -5,6 +5,7 @@ import {useAppSelector} from "../../app/hooks";
 import {useDispatch} from "react-redux";
 import {LoginOutlined, LogoutOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
+import {ROLE_ADMIN} from "../../global";
 
 const NavBar = () => {
 
@@ -17,8 +18,8 @@ const NavBar = () => {
             { user && <><Link to={routes.payments.path} data-testid={'payments-link'}>payments</Link> -&nbsp;</> }
             { user && <><Link to={routes.turnovers.path} data-testid={'turnovers-link'}>Turnovers</Link> -&nbsp;</> }
             { user && <><Link to={routes.balances.path} data-testid={'balances-link'}>Balances</Link> -&nbsp;</> }
-            { user && <><Link to={routes.companies.path} data-testid={'companies-link'}>companies</Link> -&nbsp;</> }
-            { user && <><Link to={'/users'} data-testid={'users-link'}>users</Link> -&nbsp;</> }
+            { (user && user.role === ROLE_ADMIN) && <><Link to={routes.companies.path} data-testid={'companies-link'}>Companies</Link> -&nbsp;</> }
+            { (user && user.role === ROLE_ADMIN) && <><Link to={'/users'} data-testid={'users-link'}>Users</Link> -&nbsp;</> }
             <Link to={'/about'} data-testid={'about-link'}>about</Link>
 
             { !user &&
