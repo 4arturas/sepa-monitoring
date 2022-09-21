@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {LoginOutlined, LogoutOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
 import {ROLE_ADMIN} from "../../global";
+import {ChangeCompany} from "../ChangeCompany/ChangeCompany";
 
 const NavBar = () => {
 
@@ -31,11 +32,14 @@ const NavBar = () => {
             { user &&
                 <Tooltip title={'Logout'}>
                     <Link to={routes.login.path} data-testid={'login-link'} style={{float:'right'}} onClick={ () => dispatch(userSliceActions.logout()) }>
-                        <LogoutOutlined />
+                        <LogoutOutlined style={{fontSize:'30px'}}/>
                     </Link>
                 </Tooltip> }
 
-            <span style={{float:'right', color:'white', marginRight:'20px'}}>{user?.email}</span>
+            <span style={{float:'right', color:'white', marginRight:'20px'}}>
+                <ChangeCompany/>&nbsp;&nbsp;&nbsp;&nbsp;
+                {user?.email}
+            </span>
 
         </span>
     );
