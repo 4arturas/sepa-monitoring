@@ -21,6 +21,7 @@ export interface UserInBrowser {
     email: string,
     role: string,
     companies: Array<UserInBrowserOrganization>
+    selectedCompany: UserInBrowserOrganization | null
     jwt: string
 }
 export interface UserSliceState {
