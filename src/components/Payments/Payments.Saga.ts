@@ -1,5 +1,5 @@
 import {fork, put, takeEvery} from "redux-saga/effects";
-import {PaymentsINSTQuery, paymentsSliceActions} from "./PaymentsINST.Slice";
+import {PaymentsINSTQuery, paymentsSliceActions} from "./Payments.Slice";
 import {Payment_Contracts_GenerateResponse, PaymentsService} from "../../services/openapi";
 
 

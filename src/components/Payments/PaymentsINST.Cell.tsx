@@ -1,6 +1,6 @@
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
-import {PaymentsINSTQuery, paymentsSliceActions} from "./PaymentsINST.Slice";
+import {PaymentsINSTQuery, paymentsSliceActions} from "./Payments.Slice";
 import {
     Payment_Contracts_GenerateResponse,
     PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea

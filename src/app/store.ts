@@ -9,7 +9,7 @@ import rootSaga from "../rootSaga";
 import companySlice from "../components/Companies/Companies.Slice";
 import usersSlice from "../components/Users/Users.Slice";
 import turnoversSlice from "../components/Turnovers/Turnovers.Slice";
-import paymentsINSTSlice from "../components/Payments/PaymentsINST.Slice";
+import paymentsINSTSlice from "../components/Payments/Payments.Slice";
 import balancesSlice from "../components/Balances/Balances.Slice";
 
 let sagaMonitor:any = {};

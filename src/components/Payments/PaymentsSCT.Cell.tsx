@@ -6,7 +6,7 @@ import {
     PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea
 } from "../../services/openapi";
 import {useAppSelector} from "../../app/hooks";
-import {PaymentsINSTQuery, paymentsSliceActions} from "./PaymentsINST.Slice";
+import {PaymentsINSTQuery, paymentsSliceActions} from "./Payments.Slice";
 
 
 export const PaymentsSCTCell = () => {
