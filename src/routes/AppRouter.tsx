@@ -21,7 +21,7 @@ import {BalancesSDDCell} from "../components/Balances/BalancesSDD.Cell";
 const AppRouter = () => {
     return (
         <Routes>
-            <Route path={'/'} element={<MainPage/>}/>
+            <Route path={routes.home.path} element={<MainPage/>}/>
             <Route path={routes.payments.path} element={<PaymentsPage/>}>
                 <Route path={routes.payments.children.inst.path} element={<PaymentsINSTCell/>}/>
                 <Route path={routes.payments.children.sct.path} element={<PaymentsSCTCell/>}/>
@@ -37,9 +37,9 @@ const AppRouter = () => {
                 <Route path={routes.balances.children.sct.path} element={<BalancesSCTCell/>}/>
                 <Route path={routes.balances.children.sdd.path} element={<BalancesSDDCell/>}/>
             </Route>
-            <Route path={'/companies'} element={<CompaniesPage/>}/>
-            <Route path={'/users'} element={<UsersPage/>}/>
-            <Route path={'/login'} element={<LoginPage/>}/>
+            <Route path={routes.companies.path} element={<CompaniesPage/>}/>
+            <Route path={routes.users.path} element={<UsersPage/>}/>
+            <Route path={routes.login.path} element={<LoginPage/>}/>
             {/*<Route path={'/users/:id'} element={<UserDetailsPage/>}/>*/}
             <Route path={'/*'} element={<ErrorPage/>}/>
         </Routes>
