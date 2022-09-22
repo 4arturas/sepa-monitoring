@@ -85,15 +85,13 @@ export const PaymentsINSTCell = () => {
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
-            const query:PaymentsINSTQuery = { companyId: 1, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+            const query:PaymentsINSTQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
             dispatch( paymentsSliceActions.getPaymentsInst( query ) );
         }
-    }, [] );
+    }, [currentUser?.instIsSet] );
 
     return <div>
         { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={'Business area is not set'} /> }
-        {/*{ currentUser?.instIsSet && loading && <div><Spin/> Loading INST...</div> }*/}
-        {/*{ currentUser?.instIsSet && payments && <div>${JSON.stringify(payments.items)}</div> }*/}
-        { currentUser?.instIsSet && payments && <Table dataSource={payments.items || []} columns={columns} pagination={{ pageSize: 5 }} rowKey={'paymentId'} loading={loading} bordered={true}/> }
+        { payments && <Table dataSource={payments.items || []} columns={columns} pagination={{ pageSize: 5 }} rowKey={'paymentId'} loading={loading} bordered={true}/> }
     </div>
 }
