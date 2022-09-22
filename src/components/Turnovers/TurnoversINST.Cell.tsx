@@ -8,7 +8,7 @@ import {useEffect} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Table} from "antd";
-import {MSG_BUSINESS_AREA_IS_NOT_SET} from "../../global";
+import {MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
 
 const columns = [
     {
@@ -79,6 +79,6 @@ export const TurnoversINSTCell = () => {
 
     return <div>
         { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
-        { turnovers && <Table dataSource={turnovers.items || []} columns={columns} pagination={{ pageSize: 5 }} rowKey={'transactionId'} loading={loading} bordered={true}/> }
+        { turnovers && <Table dataSource={turnovers.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/> }
     </div>
 }

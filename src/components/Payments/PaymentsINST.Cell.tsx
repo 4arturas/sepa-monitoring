@@ -8,7 +8,7 @@ import {
 import {useAppSelector} from "../../app/hooks";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Table} from "antd";
-import {MSG_BUSINESS_AREA_IS_NOT_SET} from "../../global";
+import {MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
 
 const columns = [
     {
@@ -92,6 +92,6 @@ export const PaymentsINSTCell = () => {
 
     return <div>
         { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
-        { payments && <Table dataSource={payments.items || []} columns={columns} pagination={{ pageSize: 5 }} rowKey={'paymentId'} loading={loading} bordered={true}/> }
+        { payments && <Table dataSource={payments.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'paymentId'} loading={loading} bordered={true}/> }
     </div>
 }
