@@ -59,4 +59,7 @@ export const routes = {
     companies: {
         path: '/companies'
     },
+    users: {
+        path: '/users'
+    },
 }

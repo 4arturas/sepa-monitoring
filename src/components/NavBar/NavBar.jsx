@@ -20,12 +20,12 @@ const NavBar = () => {
 
     return (
         <span>
-            <NavLink to={'/'} data-testid={'main-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Main</NavLink> -&nbsp;
+            <NavLink to={routes.home.path} data-testid={'main-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Main</NavLink> -&nbsp;
             { user && <><NavLink to={routes.payments.path} data-testid={'payments-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Payments</NavLink> -&nbsp;</> }
             { user && <><NavLink to={routes.turnovers.path} data-testid={'turnovers-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Turnovers</NavLink> -&nbsp;</> }
             { user && <><NavLink to={routes.balances.path} data-testid={'balances-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Balances</NavLink> -&nbsp;</> }
             { (user && user.role === ROLE_ADMIN) && <><NavLink to={routes.companies.path} data-testid={'companies-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Companies</NavLink> -&nbsp;</> }
-            { (user && user.role === ROLE_ADMIN) && <><NavLink to={'/users'} data-testid={'users-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Users</NavLink> -&nbsp;</> }
+            { (user && user.role === ROLE_ADMIN) && <><NavLink to={routes.users.path} data-testid={'users-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Users</NavLink> -&nbsp;</> }
             <NavLink to={'/about'} data-testid={'about-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>About</NavLink>
 
             { !user &&
