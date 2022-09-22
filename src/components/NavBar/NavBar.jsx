@@ -26,7 +26,6 @@ const NavBar = () => {
             { user && <><NavLink to={routes.balances.path} data-testid={'balances-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Balances</NavLink> -&nbsp;</> }
             { (user && user.role === ROLE_ADMIN) && <><NavLink to={routes.companies.path} data-testid={'companies-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Companies</NavLink> -&nbsp;</> }
             { (user && user.role === ROLE_ADMIN) && <><NavLink to={routes.users.path} data-testid={'users-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Users</NavLink> -&nbsp;</> }
-            <NavLink to={'/about'} data-testid={'about-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>About</NavLink>
 
             { !user &&
                 <Tooltip title={'Login'}>
