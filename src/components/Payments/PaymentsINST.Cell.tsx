@@ -9,6 +9,7 @@ import {useAppSelector} from "../../app/hooks";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Table} from "antd";
 import {Spin} from "antd/es";
+import {MSG_BUSINESS_AREA_IS_NOT_SET} from "../../global";
 
 const columns = [
     {
@@ -91,7 +92,7 @@ export const PaymentsINSTCell = () => {
     }, [currentUser?.instIsSet] );
 
     return <div>
-        { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={'Business area is not set'} /> }
+        { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
         { payments && <Table dataSource={payments.items || []} columns={columns} pagination={{ pageSize: 5 }} rowKey={'paymentId'} loading={loading} bordered={true}/> }
     </div>
 }
