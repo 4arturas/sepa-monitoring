@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {PaymentsINSTQuery, paymentsSliceActions} from "./Payments.Slice";
 import {
     Payment_Contracts_GenerateResponse,
@@ -8,7 +8,6 @@ import {
 import {useAppSelector} from "../../app/hooks";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Table} from "antd";
-import {Spin} from "antd/es";
 import {MSG_BUSINESS_AREA_IS_NOT_SET} from "../../global";
 
 const columns = [
