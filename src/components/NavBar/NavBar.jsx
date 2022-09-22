@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {routes} from "../../routes/Routes";
 import {userSliceActions} from "../Login/User.Slice";
 import {useAppSelector} from "../../app/hooks";
@@ -13,27 +13,32 @@ const NavBar = () => {
     const user = useAppSelector( (state) => state.user.currentUser );
     const dispatch = useDispatch();
 
+    let activeStyle = {
+        textDecoration: 'underline',
+        fontWeight: 'bold'
+    };
+
     return (
         <span>
-            <Link to={'/'} data-testid={'main-link'}>Main</Link> -&nbsp;
-            { user && <><Link to={routes.payments.path} data-testid={'payments-link'}>Payments</Link> -&nbsp;</> }
-            { user && <><Link to={routes.turnovers.path} data-testid={'turnovers-link'}>Turnovers</Link> -&nbsp;</> }
-            { user && <><Link to={routes.balances.path} data-testid={'balances-link'}>Balances</Link> -&nbsp;</> }
-            { (user && user.role === ROLE_ADMIN) && <><Link to={routes.companies.path} data-testid={'companies-link'}>Companies</Link> -&nbsp;</> }
-            { (user && user.role === ROLE_ADMIN) && <><Link to={'/users'} data-testid={'users-link'}>Users</Link> -&nbsp;</> }
-            <Link to={'/about'} data-testid={'about-link'}>About</Link>
+            <NavLink to={'/'} data-testid={'main-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Main</NavLink> -&nbsp;
+            { user && <><NavLink to={routes.payments.path} data-testid={'payments-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Payments</NavLink> -&nbsp;</> }
+            { user && <><NavLink to={routes.turnovers.path} data-testid={'turnovers-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Turnovers</NavLink> -&nbsp;</> }
+            { user && <><NavLink to={routes.balances.path} data-testid={'balances-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Balances</NavLink> -&nbsp;</> }
+            { (user && user.role === ROLE_ADMIN) && <><NavLink to={routes.companies.path} data-testid={'companies-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Companies</NavLink> -&nbsp;</> }
+            { (user && user.role === ROLE_ADMIN) && <><NavLink to={'/users'} data-testid={'users-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>Users</NavLink> -&nbsp;</> }
+            <NavLink to={'/about'} data-testid={'about-link'} style={({ isActive }) => isActive ? activeStyle : undefined}>About</NavLink>
 
             { !user &&
                 <Tooltip title={'Login'}>
-                    <Link to={routes.login.path} data-testid={'logout-link'} style={{float:'right'}}>
+                    <NavLink to={routes.login.path} data-testid={'logout-link'} style={{float:'right'}}>
                         <LoginOutlined />
-                    </Link>
+                    </NavLink>
                 </Tooltip> }
             { user &&
                 <Tooltip title={'Logout'}>
-                    <Link to={routes.login.path} data-testid={'login-link'} style={{float:'right'}} onClick={ () => dispatch(userSliceActions.logout()) }>
+                    <NavLink to={routes.login.path} data-testid={'login-link'} onClick={ () => dispatch(userSliceActions.logout()) } style={{float:'right'}}>
                         <LogoutOutlined style={{fontSize:'30px'}}/>
-                    </Link>
+                    </NavLink>
                 </Tooltip> }
 
             <span style={{float:'right', color:'white', marginRight:'20px'}}>
