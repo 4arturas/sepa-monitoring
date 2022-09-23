@@ -6,7 +6,7 @@ import {
     PBX_Monitoring_SEPA_Infrastructure_Enum_PaymentStatus,
     Turnover_Contracts_GenerateResponse
 } from "../../services/openapi";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Button, DatePicker, Form, Input, Select, Table} from "antd";
@@ -83,12 +83,18 @@ export const TurnoversINSTCell = () => {
     const loading:boolean                                       = useAppSelector( state => state.turnovers.loadingInst );
     const currentUser:UserInBrowser | null                      = useAppSelector( state => state.user.currentUser );
 
+    const [page, setPage]               = useState<number>(1);
+    const [pageSize, setPageSize]       = useState<number>(TABLE_PAGE_SIZE_DEFAULT);
+    const [formValues, setFormValues]   = useState<any>({});
+
     useEffect( () => {
+        console.log(turnovers?.paging);
         if ( currentUser?.instIsSet )
         {
             const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
             const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
-            const query:TurnoversQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo };
+            const query = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: page, pageSize: pageSize };
+            setFormValues( query );
             dispatch( turnoversActions.getTurnoversINST( query ) );
         }
     }, [currentUser?.instIsSet] );
@@ -104,7 +110,10 @@ export const TurnoversINSTCell = () => {
                 const dateFrom:string = values.settlementDate[0].format(dateFormat_YYYY_MM_DD);
                 const dateTo:string = values.settlementDate[1].format(dateFormat_YYYY_MM_DD);
                 delete values['settlementDate'];
-                dispatch( turnoversActions.getTurnoversINST( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
+
+                const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+                setFormValues( query );
+                dispatch( turnoversActions.getTurnoversINST( query ) );
             }}>
             <Form.Item name="settlementDate">
                 <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
@@ -143,6 +152,21 @@ export const TurnoversINSTCell = () => {
             </Form.Item>
         </Form>
         <br/>
-        <Table dataSource={turnovers?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/>
+        <Table
+            dataSource={turnovers?.items || []}
+            columns={columns}
+            pagination={{
+                pageSize: turnovers?.paging?.pageSize || TABLE_PAGE_SIZE_DEFAULT, total: turnovers?.paging?.totalItems,
+                showSizeChanger: true
+            }}
+            onChange={(e) => {
+                const query = { ...formValues, page: e.current, pageSize: e.pageSize };
+                setFormValues( query );
+                dispatch( turnoversActions.getTurnoversINST( query ) );
+                setPageSize( e.pageSize || TABLE_PAGE_SIZE_DEFAULT );
+            }}
+            rowKey={'transactionId'}
+            loading={loading}
+            bordered={true}/>
     </>
 }
