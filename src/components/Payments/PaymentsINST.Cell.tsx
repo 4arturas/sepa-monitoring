@@ -119,6 +119,8 @@ export const PaymentsINSTCell = () => {
                 const dateFrom:string = values.dateTime[0].format(dateFormat_YYYY_MM_DD);
                 const dateTo:string = values.dateTime[1].format(dateFormat_YYYY_MM_DD);
                 delete values['dateTime'];
+
+                setPage( 1 );
                 const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, page: 1, pageSize: pageSize };
                 setFormValues( query );
                 dispatch( paymentsSliceActions.getPaymentsInst( query ) );
@@ -179,6 +181,7 @@ export const PaymentsINSTCell = () => {
             dataSource={payments?.items || []}
             columns={columns}
             pagination={{
+                current: page,
                 pageSize: payments?.paging?.pageSize || TABLE_PAGE_SIZE_DEFAULT, total: payments?.paging?.totalItems,
                 showSizeChanger: true
             }}

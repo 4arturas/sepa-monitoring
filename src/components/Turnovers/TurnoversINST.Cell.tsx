@@ -9,7 +9,7 @@ import {
 import React, {useEffect, useState} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
-import {Alert, Button, DatePicker, Form, Input, Select, Table} from "antd";
+import {Alert, Button, DatePicker, Form, Input, Pagination, Select, Table} from "antd";
 import {
     dateFormat_YYYY_MM_DD,
     getLastMonthFirstDay,
@@ -88,12 +88,11 @@ export const TurnoversINSTCell = () => {
     const [formValues, setFormValues]   = useState<any>({});
 
     useEffect( () => {
-        console.log(turnovers?.paging);
         if ( currentUser?.instIsSet )
         {
             const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
             const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
-            const query = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: page, pageSize: pageSize };
+            const query = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: 1, pageSize: pageSize };
             setFormValues( query );
             dispatch( turnoversActions.getTurnoversINST( query ) );
         }
@@ -111,7 +110,8 @@ export const TurnoversINSTCell = () => {
                 const dateTo:string = values.settlementDate[1].format(dateFormat_YYYY_MM_DD);
                 delete values['settlementDate'];
 
-                const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+                setPage(1);
+                const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, page: 1, pageSize: pageSize };
                 setFormValues( query );
                 dispatch( turnoversActions.getTurnoversINST( query ) );
             }}>
@@ -155,7 +155,9 @@ export const TurnoversINSTCell = () => {
         <Table
             dataSource={turnovers?.items || []}
             columns={columns}
+
             pagination={{
+                current: page,
                 pageSize: turnovers?.paging?.pageSize || TABLE_PAGE_SIZE_DEFAULT, total: turnovers?.paging?.totalItems,
                 showSizeChanger: true
             }}
