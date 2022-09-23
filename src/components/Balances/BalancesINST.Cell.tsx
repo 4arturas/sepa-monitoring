@@ -4,7 +4,7 @@ import {
     Balance_Contracts_GenerateResponse,
     PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea
 } from "../../services/openapi";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {balancesSliceAction, BalancesSliceQuery} from "./Balances.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Button, DatePicker, Form, Input, Table} from "antd";
@@ -14,6 +14,7 @@ import {
     TABLE_PAGE_SIZE_DEFAULT
 } from "../../global";
 import moment from "moment";
+import {paymentsSliceActions} from "../Payments/Payments.Slice";
 
 const columns = [
     {
@@ -72,12 +73,17 @@ export const BalancesINSTCell = () => {
     const currentUser:UserInBrowser | null                      = useAppSelector( state => state.user.currentUser );
     let rowCounter = 0;
 
+    const [page, setPage]               = useState<number>(1);
+    const [pageSize, setPageSize]       = useState<number>(TABLE_PAGE_SIZE_DEFAULT);
+    const [formValues, setFormValues]   = useState<any>({});
+
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
             const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
             const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
-            const query:BalancesSliceQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo };
+            const query:BalancesSliceQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: 1, pageSize: pageSize };
+            setFormValues( query );
             dispatch( balancesSliceAction.getBalancesInst( query ) );
         }
     }, [currentUser?.instIsSet] );
@@ -92,7 +98,11 @@ export const BalancesINSTCell = () => {
                 const dateFrom:string = values.date[0].format(dateFormat_YYYY_MM_DD);
                 const dateTo:string = values.date[1].format(dateFormat_YYYY_MM_DD);
                 delete values['date'];
-                dispatch( balancesSliceAction.getBalancesInst( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
+
+                setPage( 1 );
+                const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, page: 1, pageSize: pageSize };
+                setFormValues( query );
+                dispatch( balancesSliceAction.getBalancesInst( query ) );
             }}>
             <Form.Item name="date">
                 <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
@@ -107,6 +117,22 @@ export const BalancesINSTCell = () => {
             </Form.Item>
         </Form>
         <br/>
-        <Table dataSource={balances?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={row=>`rowKey${rowCounter++}${row.account}`} loading={loading} bordered={true}/>
+        <Table
+            dataSource={balances?.items || []}
+            columns={columns}
+            pagination={{
+                current: page,
+                pageSize: balances?.paging?.pageSize || TABLE_PAGE_SIZE_DEFAULT, total: balances?.paging?.totalItems,
+                showSizeChanger: true
+            }}
+            onChange={(e) => {
+                const query = { ...formValues, page: e.current, pageSize: e.pageSize };
+                setFormValues( query );
+                dispatch( balancesSliceAction.getBalancesInst( query ) );
+                setPage( e.current || 1 );
+                setPageSize( e.pageSize || TABLE_PAGE_SIZE_DEFAULT );
+            }}
+            rowKey={row=>`rowKey${rowCounter++}${row.account}`}
+            loading={loading} bordered={true}/>
     </>;
 }
