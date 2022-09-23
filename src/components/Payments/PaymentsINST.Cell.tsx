@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {PaymentsINSTQuery, paymentsSliceActions} from "./Payments.Slice";
 import {
     Payment_Contracts_GenerateResponse,
@@ -94,12 +94,17 @@ export const PaymentsINSTCell = () => {
     const loading:boolean                                       = useAppSelector( state => state.payments.loadingInst );
     const currentUser:UserInBrowser | null                      = useAppSelector( state => state.user.currentUser );
 
+    const [page, setPage]               = useState<number>(1);
+    const [pageSize, setPageSize]       = useState<number>(TABLE_PAGE_SIZE_DEFAULT);
+    const [formValues, setFormValues]   = useState<any>({});
+
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
             const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
             const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
-            const query:PaymentsINSTQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo };
+            const query:PaymentsINSTQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: 1, pageSize: pageSize };
+            setFormValues( query );
             dispatch( paymentsSliceActions.getPaymentsInst( query ) );
         }
     }, [currentUser?.instIsSet] );
@@ -114,7 +119,9 @@ export const PaymentsINSTCell = () => {
                 const dateFrom:string = values.dateTime[0].format(dateFormat_YYYY_MM_DD);
                 const dateTo:string = values.dateTime[1].format(dateFormat_YYYY_MM_DD);
                 delete values['dateTime'];
-                dispatch( paymentsSliceActions.getPaymentsInst( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT }  ) );
+                const query = { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, page: 1, pageSize: pageSize };
+                setFormValues( query );
+                dispatch( paymentsSliceActions.getPaymentsInst( query ) );
             }}>
             <Form.Item name="dateTime">
                 <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
@@ -168,6 +175,22 @@ export const PaymentsINSTCell = () => {
             </Form.Item>
         </Form>
         <br/>
-        <Table dataSource={payments?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'paymentId'} loading={loading} bordered={true}/>
+        <Table
+            dataSource={payments?.items || []}
+            columns={columns}
+            pagination={{
+                pageSize: payments?.paging?.pageSize || TABLE_PAGE_SIZE_DEFAULT, total: payments?.paging?.totalItems,
+                showSizeChanger: true
+            }}
+            onChange={(e) => {
+                const query = { ...formValues, page: e.current, pageSize: e.pageSize };
+                setFormValues( query );
+                dispatch( paymentsSliceActions.getPaymentsInst( query ) );
+                setPage( e.current || 1 );
+                setPageSize( e.pageSize || TABLE_PAGE_SIZE_DEFAULT );
+            }}
+            rowKey={'paymentId'}
+            loading={loading}
+            bordered={true}/>
     </>
 }
