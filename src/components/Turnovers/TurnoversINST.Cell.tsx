@@ -86,7 +86,9 @@ export const TurnoversINSTCell = () => {
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
-            const query:TurnoversQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+            const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
+            const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
+            const query:TurnoversQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo };
             dispatch( turnoversActions.getTurnoversINST( query ) );
         }
     }, [currentUser?.instIsSet] );

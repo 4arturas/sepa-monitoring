@@ -75,7 +75,9 @@ export const BalancesINSTCell = () => {
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
-            const query:BalancesSliceQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT };
+            const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
+            const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
+            const query:BalancesSliceQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo };
             dispatch( balancesSliceAction.getBalancesInst( query ) );
         }
     }, [currentUser?.instIsSet] );
