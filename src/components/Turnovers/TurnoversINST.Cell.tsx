@@ -2,13 +2,18 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../app/hooks";
 import {
     PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea,
+    PBX_Monitoring_SEPA_Infrastructure_Enum_Direction,
+    PBX_Monitoring_SEPA_Infrastructure_Enum_PaymentStatus,
     Turnover_Contracts_GenerateResponse
 } from "../../services/openapi";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
-import {Alert, Table} from "antd";
-import {MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
+import {Alert, Button, DatePicker, Form, Input, Select, Table} from "antd";
+import {getLastMonthFirstDay, MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
+import moment from "moment/moment";
+import {paymentsSliceActions} from "../Payments/Payments.Slice";
+import {EuroOutlined} from "@ant-design/icons";
 
 const columns = [
     {
@@ -64,6 +69,11 @@ const columns = [
 ];
 
 export const TurnoversINSTCell = () => {
+
+    const { RangePicker } = DatePicker;
+    const { Option } = Select;
+    const dateFormat = 'YYYY-MM-DD';
+
     const dispatch = useDispatch();
     const turnovers:Turnover_Contracts_GenerateResponse | null  = useAppSelector( state => state.turnovers.inst );
     const loading:boolean                                       = useAppSelector( state => state.turnovers.loadingInst );
@@ -79,6 +89,58 @@ export const TurnoversINSTCell = () => {
 
     return <div>
         { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
-        { turnovers && <Table dataSource={turnovers.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/> }
+        <div>
+            <Form
+                data-testid='form-component'
+                name="basic"
+                layout={"inline"}
+                initialValues={{settlementDate: [getLastMonthFirstDay(), moment()]}}
+                onFinish={async (values: any) => {
+                    const dateFrom:string = values.settlementDate[0].format(dateFormat);
+                    const dateTo:string = values.settlementDate[1].format(dateFormat);
+                    delete values['settlementDate'];
+                    dispatch( turnoversActions.getTurnoversINST( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
+                }}>
+                <Form.Item name="settlementDate">
+                    <RangePicker format={dateFormat} style={{width:'250px'}} />
+                </Form.Item>
+                <Form.Item name="direction">
+                    <Select placeholder={'Direction'} style={{width:'115px'}}>
+                        <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}</Option>
+                        <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item name="transactionId">
+                    <Input placeholder="Txn id" style={{width:'200px'}}/>
+                </Form.Item>
+                <Form.Item name="debtorCode">
+                    <Input placeholder="Debtor BIC" style={{width:'200px'}}/>
+                </Form.Item>
+                <Form.Item name="creditorCode">
+                    <Input placeholder="Creditor BIC" style={{width:'200px'}}/>
+                </Form.Item>
+                <Form.Item name="debtorAccount">
+                    <Input placeholder="Debtor Account" style={{width:'200px'}}/>
+                </Form.Item>
+                <Form.Item name="creditorAccount">
+                    <Input placeholder="Creditor Account" style={{width:'200px'}}/>
+                </Form.Item>
+                <Form.Item name="amountFrom">
+                    <Input placeholder="From Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
+                </Form.Item>
+                <Form.Item name="amountTo">
+                    <Input placeholder="To Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
+                </Form.Item>
+                <Form.Item style={{textAlign:'center'}}>
+                    <Button htmlType="submit" type={"primary"}>Search</Button>&nbsp;
+                    <Button htmlType="reset">Clear</Button>&nbsp;
+                    <Button htmlType="submit" type={"primary"} onClick={() => alert('Not Implemented yet')}>Export</Button>
+                </Form.Item>
+            </Form>
+        </div>
+        <br/>
+        <div>
+            <Table dataSource={turnovers?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/>
+        </div>
     </div>
 }
