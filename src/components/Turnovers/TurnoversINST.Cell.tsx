@@ -91,60 +91,58 @@ export const TurnoversINSTCell = () => {
         }
     }, [currentUser?.instIsSet] );
 
-    return <div>
-        { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
-        <div>
-            <Form
-                data-testid='form-component'
-                name="basic"
-                layout={"inline"}
-                initialValues={{settlementDate: [getLastMonthFirstDay(), moment()]}}
-                onFinish={async (values: any) => {
-                    const dateFrom:string = values.settlementDate[0].format(dateFormat_YYYY_MM_DD);
-                    const dateTo:string = values.settlementDate[1].format(dateFormat_YYYY_MM_DD);
-                    delete values['settlementDate'];
-                    dispatch( turnoversActions.getTurnoversINST( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
-                }}>
-                <Form.Item name="settlementDate">
-                    <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
-                </Form.Item>
-                <Form.Item name="direction">
-                    <Select placeholder={'Direction'} style={{width:'115px'}}>
-                        <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}</Option>
-                        <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}</Option>
-                    </Select>
-                </Form.Item>
-                <Form.Item name="transactionId">
-                    <Input placeholder="Txn id" style={{width:'200px'}}/>
-                </Form.Item>
-                <Form.Item name="debtorCode">
-                    <Input placeholder="Debtor BIC" style={{width:'200px'}}/>
-                </Form.Item>
-                <Form.Item name="creditorCode">
-                    <Input placeholder="Creditor BIC" style={{width:'200px'}}/>
-                </Form.Item>
-                <Form.Item name="debtorAccount">
-                    <Input placeholder="Debtor Account" style={{width:'200px'}}/>
-                </Form.Item>
-                <Form.Item name="creditorAccount">
-                    <Input placeholder="Creditor Account" style={{width:'200px'}}/>
-                </Form.Item>
-                <Form.Item name="amountFrom">
-                    <Input placeholder="From Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
-                </Form.Item>
-                <Form.Item name="amountTo">
-                    <Input placeholder="To Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
-                </Form.Item>
-                <Form.Item style={{textAlign:'center'}}>
-                    <Button htmlType="submit" type={"primary"}>Search</Button>&nbsp;
-                    <Button htmlType="reset">Clear</Button>&nbsp;
-                    <Button htmlType="submit" type={"primary"} onClick={() => alert('Not Implemented yet')}>Export</Button>
-                </Form.Item>
-            </Form>
-        </div>
+
+    return <>
+        <Form
+            data-testid='form-component'
+            name="basic"
+            layout={"inline"}
+            initialValues={{settlementDate: [getLastMonthFirstDay(), moment()]}}
+            onFinish={async (values: any) => {
+                const dateFrom:string = values.settlementDate[0].format(dateFormat_YYYY_MM_DD);
+                const dateTo:string = values.settlementDate[1].format(dateFormat_YYYY_MM_DD);
+                delete values['settlementDate'];
+                dispatch( turnoversActions.getTurnoversINST( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
+            }}>
+            <Form.Item name="settlementDate">
+                <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
+            </Form.Item>
+            <Form.Item name="direction">
+                <Select placeholder={'Direction'} style={{width:'115px'}}>
+                    <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.IN}</Option>
+                    <Option value={PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}>{PBX_Monitoring_SEPA_Infrastructure_Enum_Direction.OUT}</Option>
+                </Select>
+            </Form.Item>
+            <Form.Item name="transactionId">
+                <Input placeholder="Txn id" style={{width:'200px'}}/>
+            </Form.Item>
+            <Form.Item name="debtorCode">
+                <Input placeholder="Debtor BIC" style={{width:'200px'}}/>
+            </Form.Item>
+            <Form.Item name="creditorCode">
+                <Input placeholder="Creditor BIC" style={{width:'200px'}}/>
+            </Form.Item>
+            <Form.Item name="debtorAccount">
+                <Input placeholder="Debtor Account" style={{width:'200px'}}/>
+            </Form.Item>
+            <Form.Item name="creditorAccount">
+                <Input placeholder="Creditor Account" style={{width:'200px'}}/>
+            </Form.Item>
+            <Form.Item name="amountFrom">
+                <Input placeholder="From Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
+            </Form.Item>
+            <Form.Item name="amountTo">
+                <Input placeholder="To Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
+            </Form.Item>
+            <Form.Item style={{textAlign:'center'}}>
+                <Button htmlType="submit" type={"primary"}>Search</Button>&nbsp;
+                <Button htmlType="reset">Clear</Button>&nbsp;
+                <Button htmlType="submit" type={"primary"} onClick={() => alert('Not Implemented yet')}>Export</Button>
+            </Form.Item>
+        </Form>
         <br/>
         <div>
             <Table dataSource={turnovers?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/>
         </div>
-    </div>
+    </>
 }

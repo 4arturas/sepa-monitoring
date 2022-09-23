@@ -75,7 +75,6 @@ export const BalancesINSTCell = () => {
     }, [currentUser?.instIsSet] );
 
     return <div>
-        { !currentUser?.instIsSet && <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} /> }
         { balances && <Table dataSource={balances.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={row=>`rowKey${rowCounter++}${row.account}`} loading={loading} bordered={true}/> }
     </div>;
 }

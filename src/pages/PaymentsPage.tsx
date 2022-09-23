@@ -7,9 +7,16 @@ import React from "react";
 import {UserInBrowser} from "../components/Login/User.Slice";
 import {useAppSelector} from "../app/hooks";
 import {NavBarSmall} from "../components/NavBar/NavBarSmall";
+import {Alert} from "antd";
+import {MSG_BUSINESS_AREA_IS_NOT_SET} from "../global";
+import {ChangeCompany} from "../components/ChangeCompany/ChangeCompany";
 
 export const PaymentsPage = () => {
     const location = useLocation();
+    const currentUser:UserInBrowser | null  = useAppSelector( state => state.user.currentUser );
+
+    if ( !currentUser?.instIsSet )
+        return <Alert showIcon={true} type='info' message={MSG_BUSINESS_AREA_IS_NOT_SET} description={<ChangeCompany/>}/>;
 
     return (
         <div data-testid={'payments-page'}>
