@@ -80,7 +80,7 @@ export const BalancesINSTCell = () => {
         }
     }, [currentUser?.instIsSet] );
 
-    return <div>
+    return <>
         <Form
             data-testid='form-component'
             name="basic"
@@ -106,5 +106,5 @@ export const BalancesINSTCell = () => {
         </Form>
         <br/>
         <Table dataSource={balances?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={row=>`rowKey${rowCounter++}${row.account}`} loading={loading} bordered={true}/>
-    </div>;
+    </>;
 }

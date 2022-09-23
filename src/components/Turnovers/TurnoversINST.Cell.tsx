@@ -141,8 +141,6 @@ export const TurnoversINSTCell = () => {
             </Form.Item>
         </Form>
         <br/>
-        <div>
-            <Table dataSource={turnovers?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/>
-        </div>
+        <Table dataSource={turnovers?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'transactionId'} loading={loading} bordered={true}/>
     </>
 }

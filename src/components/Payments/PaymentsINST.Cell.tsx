@@ -102,7 +102,7 @@ export const PaymentsINSTCell = () => {
         }
     }, [currentUser?.instIsSet] );
 
-    return <div>
+    return <>
         <Form
             data-testid='form-component'
             name="basic"
@@ -166,8 +166,6 @@ export const PaymentsINSTCell = () => {
             </Form.Item>
         </Form>
         <br/>
-        <div>
-            <Table dataSource={payments?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'paymentId'} loading={loading} bordered={true}/>
-        </div>
-    </div>
+        <Table dataSource={payments?.items || []} columns={columns} pagination={{ pageSize: TABLE_PAGE_SIZE_DEFAULT }} rowKey={'paymentId'} loading={loading} bordered={true}/>
+    </>
 }
