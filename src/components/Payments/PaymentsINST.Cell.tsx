@@ -17,6 +17,7 @@ import {
 } from "../../global";
 import moment from "moment";
 import {EuroOutlined} from "@ant-design/icons";
+import {AutoRefresh} from "../../utils/AutoRefresh";
 
 const columns = [
     {
@@ -85,6 +86,7 @@ const columns = [
 ];
 
 export const PaymentsINSTCell = () => {
+    const [form] = Form.useForm();
 
     const { RangePicker } = DatePicker;
     const { Option } = Select;
@@ -98,9 +100,18 @@ export const PaymentsINSTCell = () => {
     const [pageSize, setPageSize]       = useState<number>(TABLE_PAGE_SIZE_DEFAULT);
     const [formValues, setFormValues]   = useState<any>({});
 
+    const disableAutorefreshComponent = () => {
+        const b:boolean = !form.getFieldValue('dateTime') ? true : (form.getFieldValue('dateTime')[1].format(dateFormat_YYYY_MM_DD) !== moment().format(dateFormat_YYYY_MM_DD));
+        console.log( b );
+        return b;
+    };
+    const [disabledAutorefresh, setDisabledAutorefresh] = useState<boolean>(true);
+
     useEffect( () => {
         if ( currentUser?.instIsSet )
         {
+            setDisabledAutorefresh( disableAutorefreshComponent() );
+
             const dateFrom:string   = getLastMonthFirstDay().format(dateFormat_YYYY_MM_DD);
             const dateTo:string     = moment().format(dateFormat_YYYY_MM_DD);
             const query:PaymentsINSTQuery = { companyId: currentUser.userId, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT, dateFrom: dateFrom, dateTo: dateTo, page: 1, pageSize: pageSize };
@@ -111,11 +122,14 @@ export const PaymentsINSTCell = () => {
 
     return <>
         <Form
+            form={form}
             data-testid='form-component'
             name="basic"
             layout={"inline"}
             initialValues={{dateTime: [getLastMonthFirstDay(), moment()]}}
             onFinish={async (values: any) => {
+                setDisabledAutorefresh( disableAutorefreshComponent() );
+
                 const dateFrom:string = values.dateTime[0].format(dateFormat_YYYY_MM_DD);
                 const dateTo:string = values.dateTime[1].format(dateFormat_YYYY_MM_DD);
                 delete values['dateTime'];
@@ -126,7 +140,7 @@ export const PaymentsINSTCell = () => {
                 dispatch( paymentsSliceActions.getPaymentsInst( query ) );
             }}>
             <Form.Item name="dateTime">
-                <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
+                <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} onChange={() => { setDisabledAutorefresh( disableAutorefreshComponent() ); }} />
             </Form.Item>
             <Form.Item name="direction">
                 <Select placeholder={'Direction'} style={{width:'115px'}}>
@@ -170,6 +184,9 @@ export const PaymentsINSTCell = () => {
             <Form.Item name="amountTo">
                 <Input placeholder="To Amount" prefix={<EuroOutlined />}  style={{width:'115px'}}/>
             </Form.Item>
+            <AutoRefresh
+                disabled={ disabledAutorefresh }
+                autoRefreshFunction={ () => dispatch( paymentsSliceActions.getPaymentsInst( formValues ) )}/>
             <Form.Item style={{textAlign:'center'}}>
                 <Button htmlType="submit" type={"primary"}>Search</Button>&nbsp;
                 <Button htmlType="reset">Clear</Button>&nbsp;
