@@ -163,6 +163,7 @@ export const TurnoversINSTCell = () => {
                 const query = { ...formValues, page: e.current, pageSize: e.pageSize };
                 setFormValues( query );
                 dispatch( turnoversActions.getTurnoversINST( query ) );
+                setPage( e.current || 1 );
                 setPageSize( e.pageSize || TABLE_PAGE_SIZE_DEFAULT );
             }}
             rowKey={'transactionId'}
