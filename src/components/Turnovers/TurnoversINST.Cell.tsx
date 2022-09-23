@@ -10,7 +10,12 @@ import React, {useEffect} from "react";
 import {turnoversActions, TurnoversQuery} from "./Turnovers.Slice";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Button, DatePicker, Form, Input, Select, Table} from "antd";
-import {getLastMonthFirstDay, MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
+import {
+    dateFormat_YYYY_MM_DD,
+    getLastMonthFirstDay,
+    MSG_BUSINESS_AREA_IS_NOT_SET,
+    TABLE_PAGE_SIZE_DEFAULT
+} from "../../global";
 import moment from "moment/moment";
 import {paymentsSliceActions} from "../Payments/Payments.Slice";
 import {EuroOutlined} from "@ant-design/icons";
@@ -72,7 +77,6 @@ export const TurnoversINSTCell = () => {
 
     const { RangePicker } = DatePicker;
     const { Option } = Select;
-    const dateFormat = 'YYYY-MM-DD';
 
     const dispatch = useDispatch();
     const turnovers:Turnover_Contracts_GenerateResponse | null  = useAppSelector( state => state.turnovers.inst );
@@ -96,13 +100,13 @@ export const TurnoversINSTCell = () => {
                 layout={"inline"}
                 initialValues={{settlementDate: [getLastMonthFirstDay(), moment()]}}
                 onFinish={async (values: any) => {
-                    const dateFrom:string = values.settlementDate[0].format(dateFormat);
-                    const dateTo:string = values.settlementDate[1].format(dateFormat);
+                    const dateFrom:string = values.settlementDate[0].format(dateFormat_YYYY_MM_DD);
+                    const dateTo:string = values.settlementDate[1].format(dateFormat_YYYY_MM_DD);
                     delete values['settlementDate'];
                     dispatch( turnoversActions.getTurnoversINST( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT } ) );
                 }}>
                 <Form.Item name="settlementDate">
-                    <RangePicker format={dateFormat} style={{width:'250px'}} />
+                    <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
                 </Form.Item>
                 <Form.Item name="direction">
                     <Select placeholder={'Direction'} style={{width:'115px'}}>

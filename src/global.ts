@@ -5,6 +5,8 @@ export const ROLE_NEED_TO_ASK_WHAT_ELSE_ROLES_ARE_AVAILABLE = '-----';
 
 export const TABLE_PAGE_SIZE_DEFAULT = 5;
 
+export const dateFormat_YYYY_MM_DD = 'YYYY-MM-DD';
+
 
 export const MSG_BUSINESS_AREA_IS_NOT_SET = 'Business area is not set'
 

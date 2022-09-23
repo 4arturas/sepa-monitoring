@@ -10,7 +10,12 @@ import {
 import {useAppSelector} from "../../app/hooks";
 import {UserInBrowser} from "../Login/User.Slice";
 import {Alert, Button, DatePicker, Form, Input, Select, Table} from "antd";
-import {getLastMonthFirstDay, MSG_BUSINESS_AREA_IS_NOT_SET, TABLE_PAGE_SIZE_DEFAULT} from "../../global";
+import {
+    dateFormat_YYYY_MM_DD,
+    getLastMonthFirstDay,
+    MSG_BUSINESS_AREA_IS_NOT_SET,
+    TABLE_PAGE_SIZE_DEFAULT
+} from "../../global";
 import moment from "moment";
 import {EuroOutlined} from "@ant-design/icons";
 
@@ -84,7 +89,6 @@ export const PaymentsINSTCell = () => {
 
     const { RangePicker } = DatePicker;
     const { Option } = Select;
-    const dateFormat = 'YYYY-MM-DD';
 
     const dispatch = useDispatch();
     const payments:Payment_Contracts_GenerateResponse | null    = useAppSelector( state => state.payments.inst );
@@ -109,13 +113,13 @@ export const PaymentsINSTCell = () => {
                     layout={"inline"}
                     initialValues={{dateTime: [getLastMonthFirstDay(), moment()]}}
                     onFinish={async (values: any) => {
-                        const dateFrom:string = values.dateTime[0].format(dateFormat);
-                        const dateTo:string = values.dateTime[1].format(dateFormat);
+                        const dateFrom:string = values.dateTime[0].format(dateFormat_YYYY_MM_DD);
+                        const dateTo:string = values.dateTime[1].format(dateFormat_YYYY_MM_DD);
                         delete values['dateTime'];
                         dispatch( paymentsSliceActions.getPaymentsInst( { companyId: currentUser?.userId, dateFrom: dateFrom, dateTo: dateTo,...values, businessArea: PBX_Monitoring_SEPA_Infrastructure_Enum_BusinessArea.SEPA_INSTANT }  ) );
                     }}>
                     <Form.Item name="dateTime">
-                        <RangePicker format={dateFormat} style={{width:'250px'}} />
+                        <RangePicker format={dateFormat_YYYY_MM_DD} style={{width:'250px'}} />
                     </Form.Item>
                     <Form.Item name="direction">
                         <Select placeholder={'Direction'} style={{width:'115px'}}>
